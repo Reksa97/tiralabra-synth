@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'org.reko.tiralabra.synth'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+// Jacoco
+apply plugin: 'jacoco';
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+check.dependsOn jacocoTestReport
