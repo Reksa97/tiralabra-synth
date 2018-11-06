@@ -6,6 +6,8 @@ import java.awt.event.WindowEvent;
 
 public class Synth {
 
+    private Oscillator[] oscillators = new Oscillator[3];
+
     private boolean shouldGenerate;
     private int wavePosition;
 
@@ -33,6 +35,13 @@ public class Synth {
 
 
     Synth() {
+        for (int i = 0; i < oscillators.length; i++) {
+            Oscillator osc = new Oscillator();
+            osc.setLocation(5+(i*205),5);
+            frame.add(osc);
+        }
+
+
         frame.addKeyListener(new KeyAdapter() {
 
             // Mitä tahansa näppäintä painettaessa tarkistetaan onko äänisäie käynnissä,
@@ -50,6 +59,7 @@ public class Synth {
             @Override
             public void keyReleased(KeyEvent e) {
                 shouldGenerate = false;
+
             }
         });
 
@@ -66,7 +76,7 @@ public class Synth {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         // Ikkunan koko
-        frame.setSize(600,350);
+        frame.setSize(625,350);
 
         // Ikkunaa ei voida muuttaa eri kokoiseksi
         frame.setResizable(false);
