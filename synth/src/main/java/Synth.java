@@ -19,50 +19,63 @@ public class Synth {
         if (!shouldGenerate) {
             return null;
         }
-
         // Muuten luodaan puskurin kokoinen (512) short-array
         short[] buffers = new short[AudioThread.BUFFER_SIZE];
 
         // Täytetään array, jossa on 220Hz sini-aallon arvot skaalattuna välille 0-32767.
         // Näytteenottotaajuus on 44100Hz, joten yhteen sekuntiin tulee 220 aaltoa.
         for (int i = 0; i < AudioThread.BUFFER_SIZE; i++) {
-            buffers[i] = (short) (Short.MAX_VALUE * Math.sin( (2*Math.PI * 220 ) * wavePosition++ / AudioInfo.SAMPLE_RATE) );
+            double amplitude = 0;
 
+            // Summataan kaikkien oskillaattorien aallot tietyssä ajankohdassa. Saadaan summa-aalto
+            for (Oscillator osc : oscillators) {
+                amplitude += osc.nextSample();
+            }
+            // Skaalataan arvot 16 bittiseksi
+            buffers[i] = (short) (Short.MAX_VALUE * amplitude / oscillators.length);
         }
         return buffers;
     });
 
+    // keyAdapter määrittää mitä toimintoja näppäimillä on
+    KeyAdapter keyAdapter = new KeyAdapter() {
 
-
-    Synth() {
-        for (int i = 0; i < oscillators.length; i++) {
-            Oscillator osc = new Oscillator();
-            osc.setLocation(5+(i*205),5);
-            frame.add(osc);
+        // Mitä tahansa näppäintä painettaessa tarkistetaan onko äänisäie käynnissä,
+        // ja tarvittaessa käynnistetään puskirien luominen ja äänen toistaminen.
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (!audioThread.isRunning()) {
+                System.out.println(e.getKeyChar());
+                shouldGenerate = true;
+                audioThread.triggerPlayback();
+            }
         }
 
+        // Kun päästetään näppäimistä irti, lopetetaan äänen toistaminen.
+        @Override
+        public void keyReleased(KeyEvent e) {
+            shouldGenerate = false;
 
-        frame.addKeyListener(new KeyAdapter() {
+        }
 
-            // Mitä tahansa näppäintä painettaessa tarkistetaan onko äänisäie käynnissä,
-            // ja tarvittaessa käynnistetään puskirien luominen ja äänen toistaminen.
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (!audioThread.isRunning()) {
+    };
 
-                    shouldGenerate = true;
-                    audioThread.triggerPlayback();
-                }
-            }
+    Synth() {
+        // Määritellään haluttu määrä oskillaattoreita käyttöön
+        for (int i = 0; i < oscillators.length; i++) {
+            // Oskillaattorille annetaan parametrina JFrame, jotta fokus saadaan pidettyä siinä.
+            Oscillator osc = new Oscillator(frame);
 
-            // Kun päästetään näppäimistä irti, lopetetaan äänen toistaminen.
-            @Override
-            public void keyReleased(KeyEvent e) {
-                shouldGenerate = false;
+            // Sijoitellaan horisontaalisesti
+            osc.setLocation(5+(i*205),5);
+            frame.add(osc);
 
-            }
-        });
+            // Tallennetaan se myös ohjelman käytettäväksi
+            oscillators[i] = osc;
+        }
 
+        frame.setFocusable(true);
+        frame.addKeyListener(keyAdapter);
 
         frame.addWindowListener(new WindowAdapter() {
             // Kun ikkuna suljetaan, täytyy myös sulkea äänisäie.
@@ -72,6 +85,7 @@ public class Synth {
 
             }
         });
+
         // Ikkunan sulkeminen hävittää sen
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -81,7 +95,7 @@ public class Synth {
         // Ikkunaa ei voida muuttaa eri kokoiseksi
         frame.setResizable(false);
 
-        // Ei vielä layoutia, eikä sijainnin suhdetta mihinkään.
+        // Ei määritellä (ainakaan vielä) layoutia, eikä sijainnin suhdetta mihinkään.
         frame.setLayout(null);
         frame.setLocationRelativeTo(null);
 
