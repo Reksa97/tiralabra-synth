@@ -6,6 +6,7 @@ import java.awt.event.WindowEvent;
 
 public class Synth {
 
+    private Keyboard keyboard = new Keyboard();
     private Oscillator[] oscillators = new Oscillator[3];
 
     private boolean shouldGenerate;
@@ -44,11 +45,33 @@ public class Synth {
         // ja tarvittaessa käynnistetään puskirien luominen ja äänen toistaminen.
         @Override
         public void keyPressed(KeyEvent e) {
+
             if (!audioThread.isRunning()) {
-                System.out.println(e.getKeyChar());
-                shouldGenerate = true;
-                audioThread.triggerPlayback();
+                switch (e.getKeyChar()) {
+                    case 'm':
+                        keyboard.octaveUp();
+                        break;
+
+                    case 'n':
+                        keyboard.octaveDown();
+                        break;
+
+                    default:
+                        double frequency = keyboard.frequencyOf(e.getKeyChar());
+
+                        if (frequency != -1) {
+                            for (Oscillator osc : oscillators) {
+                                osc.setFrequency(frequency);
+                            }
+
+                            shouldGenerate = true;
+                            audioThread.triggerPlayback();
+                        }
+
+
+                }
             }
+
         }
 
         // Kun päästetään näppäimistä irti, lopetetaan äänen toistaminen.
