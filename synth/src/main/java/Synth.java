@@ -10,7 +10,6 @@ public class Synth {
     private Oscillator[] oscillators = new Oscillator[3];
 
     private boolean shouldGenerate;
-    private int wavePosition;
 
     private final JFrame frame = new JFrame ("Synth");
 
@@ -56,8 +55,22 @@ public class Synth {
                         keyboard.octaveDown();
                         break;
 
+                    case '0':
+
+                        double frequency = keyboard.randomFrequency();
+
+                        for (Oscillator osc : oscillators) {
+                            osc.setFrequency(frequency);
+                        }
+
+                        shouldGenerate = true;
+                        audioThread.triggerPlayback();
+
+                        break;
+
+
                     default:
-                        double frequency = keyboard.frequencyOf(e.getKeyChar());
+                        frequency = keyboard.frequencyOf(e.getKeyChar());
 
                         if (frequency != -1) {
                             for (Oscillator osc : oscillators) {

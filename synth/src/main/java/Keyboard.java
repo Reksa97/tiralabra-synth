@@ -1,6 +1,8 @@
 // Määritellään keyboard, jossa on 18 kosketinta. Lisäksi oktaavia voidaan vaihtaa, joten voidaan soittaa
 // laajemmalta skaalalta.
 
+import java.util.Random;
+
 public class Keyboard {
 
     // Näppäimet vastaavat pianon koskettimia korkeusjärjestyksessä alhaalta ylös.
@@ -14,6 +16,9 @@ public class Keyboard {
 
     // Aluksi ollaan alhaalta laskettuna oktaavissa 3
     private int currentOctave = 3;
+
+    // Häröilyyn
+    private Random rndm = new Random();
 
 
     public Keyboard() {
@@ -36,6 +41,10 @@ public class Keyboard {
         }
     }
 
+    public double randomFrequency() {
+
+        return rndm.nextDouble()*880;
+    }
 
     // Metodi etsii painetulle näppäimelle taajuuden
     public double frequencyOf(char keyPressed) {
