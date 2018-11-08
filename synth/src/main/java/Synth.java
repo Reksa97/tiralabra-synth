@@ -3,6 +3,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.function.Supplier;
 
 public class Synth {
 
@@ -13,8 +14,7 @@ public class Synth {
 
     private final JFrame frame = new JFrame ("Synth");
 
-    // Luodaan AudioThread olio, joka ottaa argumenttina Supplier<short[]> olion
-    private final AudioThread audioThread = new AudioThread(() -> {
+    public Supplier<short[]> supplier = () -> {
         // Jos ei pidä generoida buffereita, palautetaan null
         if (!shouldGenerate) {
             return null;
@@ -35,7 +35,21 @@ public class Synth {
             buffers[i] = (short) (Short.MAX_VALUE * amplitude / oscillators.length);
         }
         return buffers;
-    });
+    };
+
+
+    // Luodaan AudioThread olio, joka ottaa argumenttina Supplier<short[]> olion
+    private final AudioThread audioThread = new AudioThread(supplier);
+
+    public AudioThread getAudioThread() {
+        return this.audioThread;
+    }
+
+    public Oscillator[] getOscillators() {
+        return this.oscillators;
+    }
+
+
 
     // keyAdapter määrittää mitä toimintoja näppäimillä on
     KeyAdapter keyAdapter = new KeyAdapter() {
@@ -68,7 +82,6 @@ public class Synth {
 
                         break;
 
-
                     default:
                         frequency = keyboard.frequencyOf(e.getKeyChar());
 
@@ -80,8 +93,6 @@ public class Synth {
                             shouldGenerate = true;
                             audioThread.triggerPlayback();
                         }
-
-
                 }
             }
 
@@ -141,5 +152,13 @@ public class Synth {
     public static class AudioInfo {
         // Käytössä on yleinen näytteenottotaajuus 44100 Hz
         public static final int SAMPLE_RATE = 44100;
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void close() {
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
 }

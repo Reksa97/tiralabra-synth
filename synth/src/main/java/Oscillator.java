@@ -82,9 +82,13 @@ public class Oscillator extends JPanel implements ActionListener {
         frame.requestFocus();
     }
 
+    public void setWaveform(Waveform waveform) {
+        this.currentWaveform = waveform;
+    }
+
     // Aaltotyypit
     public enum Waveform  {
-        Sine, Saw, Square, Triangle, Nothing;
+        Sine, Saw, Square, Triangle, Nothing, Unknown;
     }
 }
 
