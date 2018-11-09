@@ -80,6 +80,8 @@ n = oktaavi alaspäin
 
 [Wikipedia - Synthesizer](https://en.wikipedia.org/wiki/Synthesizer#Components)
 
+[Wikipedia - Aaltotyypit](https://en.wikipedia.org/wiki/Non-sinusoidal_waveform)
+
 [OpenAL](https://www.openal.org/documentation/OpenAL_Programmers_Guide.pdf)
 
 
