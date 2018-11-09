@@ -15,3 +15,5 @@ on noin 466Hz. Valitsin koskettimiksi hieman pianoa muistuttavat näppäinvälit
 M, ja alas painamalla N.
 
 Testien tekeminen oli hieman haastaava, mutta sain tehtyä niitä melko kattavasti. Niihin täytyy paneutua vielä lisää.
+
+Tällä viikolla käytin työhön aikaa noin 10 tuntia. Seuraavaksi voisin toteuttaa wavetablet, sekä aloitella envolopejen tekemisen.
