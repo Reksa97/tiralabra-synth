@@ -52,6 +52,7 @@ public class Keyboard {
         // Etsitään indeksi näppäimelle
         int indexOfChar = -1;
 
+        /*
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == keyPressed) {
                 indexOfChar = i;
@@ -62,7 +63,69 @@ public class Keyboard {
         // Jos ei löytynyt näppäintä
         if (indexOfChar == -1) {
             return -1;
+        } */
+
+
+        switch (keyPressed) {
+            case 'a':
+                indexOfChar = 0;
+                break;
+            case 'w':
+                indexOfChar = 1;
+                break;
+            case 's':
+                indexOfChar = 2;
+                break;
+            case 'd':
+                indexOfChar = 3;
+                break;
+            case 'r':
+                indexOfChar = 4;
+                break;
+            case 'f':
+                indexOfChar = 5;
+                break;
+            case 't':
+                indexOfChar = 6;
+                break;
+            case 'g':
+                indexOfChar = 7;
+                break;
+            case 'h':
+                indexOfChar = 8;
+                break;
+            case 'u':
+                indexOfChar = 9;
+                break;
+            case 'j':
+                indexOfChar = 10;
+                break;
+            case 'i':
+                indexOfChar = 11;
+                break;
+            case 'k':
+                indexOfChar = 12;
+                break;
+            case 'o':
+                indexOfChar = 13;
+                break;
+            case 'l':
+                indexOfChar = 14;
+                break;
+            case 'ö':
+                indexOfChar = 15;
+                break;
+            case 'å':
+                indexOfChar = 16;
+                break;
+            case 'ä':
+                indexOfChar = 17;
+                break;
+                default:
+                    return -1;
         }
+
+
 
         // Tulostetaan tietoa käyttäjälle painetusta näppäimestä
         System.out.println("Koeskettimen numero: " + (currentOctave*12+indexOfChar));

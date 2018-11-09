@@ -20,7 +20,7 @@ public class Synth {
             return null;
         }
         // Muuten luodaan puskurin kokoinen (512) short-array
-        short[] buffers = new short[AudioThread.BUFFER_SIZE];
+        short[] buffer = new short[AudioThread.BUFFER_SIZE];
 
         // Täytetään array, jossa on 220Hz sini-aallon arvot skaalattuna välille 0-32767.
         // Näytteenottotaajuus on 44100Hz, joten yhteen sekuntiin tulee 220 aaltoa.
@@ -32,9 +32,9 @@ public class Synth {
                 amplitude += osc.nextSample();
             }
             // Skaalataan arvot 16 bittiseksi
-            buffers[i] = (short) (Short.MAX_VALUE * amplitude / oscillators.length);
+            buffer[i] = (short) (Short.MAX_VALUE * amplitude / oscillators.length);
         }
-        return buffers;
+        return buffer;
     };
 
 
