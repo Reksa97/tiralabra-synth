@@ -78,4 +78,8 @@ n = oktaavi alaspäin
 ##### Lähteet
 [Wikipedia - ADSR](https://fi.wikipedia.org/wiki/ADSR)
 
+[Wikipedia - Synthesizer](https://en.wikipedia.org/wiki/Synthesizer#Components)
+
 [OpenAL](https://www.openal.org/documentation/OpenAL_Programmers_Guide.pdf)
+
+
