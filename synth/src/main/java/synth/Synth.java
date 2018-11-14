@@ -16,7 +16,7 @@ public class Synth {
 
     private boolean shouldGenerate;
 
-    private final JFrame frame = new JFrame ("synth.Synth");
+    private final JFrame frame = new JFrame ("Synth");
 
     public Supplier<short[]> supplier = () -> {
         // Jos ei pidä generoida buffereita, palautetaan null
@@ -106,9 +106,7 @@ public class Synth {
         @Override
         public void keyReleased(KeyEvent e) {
             shouldGenerate = false;
-
         }
-
     };
 
     public Synth() {
@@ -133,7 +131,6 @@ public class Synth {
             @Override
             public void windowClosing(WindowEvent e) {
                 audioThread.close();
-
             }
         });
 
@@ -153,6 +150,7 @@ public class Synth {
         // Asetetaan näkyväksi.
         frame.setVisible(true);
     }
+
     public static class AudioInfo {
         // Käytössä on yleinen näytteenottotaajuus 44100 Hz
         public static final int SAMPLE_RATE = 44100;

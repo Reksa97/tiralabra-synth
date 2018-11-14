@@ -52,20 +52,6 @@ public class Keyboard {
         // Etsitään indeksi näppäimelle
         int indexOfChar = -1;
 
-        /*
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == keyPressed) {
-                indexOfChar = i;
-                break;
-            }
-        }
-
-        // Jos ei löytynyt näppäintä
-        if (indexOfChar == -1) {
-            return -1;
-        } */
-
-
         switch (keyPressed) {
             case 'a':
                 indexOfChar = 0;
@@ -125,10 +111,8 @@ public class Keyboard {
                     return -1;
         }
 
-
-
         // Tulostetaan tietoa käyttäjälle painetusta näppäimestä
-        System.out.println("Koeskettimen numero: " + (currentOctave*12+indexOfChar));
+        System.out.println("Koskettimen numero: " + (currentOctave*12+indexOfChar));
         System.out.println("Taajuus: "+ Math.round(frequencies[currentOctave*12 + indexOfChar]) + " Hz");
         System.out.println();
 

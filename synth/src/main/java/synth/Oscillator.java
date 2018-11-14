@@ -10,28 +10,29 @@ import java.awt.event.ActionListener;
 public class Oscillator extends JPanel implements ActionListener {
 
     // Oletusaaltomuotona Sini-aalto
-    private Waveform currentWaveform = Waveform.Sine;
+    private Wavetable wavetable = Wavetable.Sine;
 
 
-    private int wavePosition;
-    private double frequency;
+    private int wavetableIndex;
+    private int wavetableStep;
+
     private JFrame frame;
 
     // Konstruktorille annetaan parametrina JFrame-olio, jotta fokus voidaan pitää framessa, eikä oskillaattorissa.
     public Oscillator(JFrame frame) {
         this.frame = frame;
-        Waveform[] waveformsArray = {Waveform.Sine, Waveform.Saw, Waveform.Square, Waveform.Triangle, Waveform.Nothing};
+        Wavetable[] wavetableArray = Wavetable.values();
 
         // Valintaboksi
-        JComboBox<Waveform> waveforms = new JComboBox<>(waveformsArray);
-        waveforms.setSelectedIndex(0);
-        waveforms.setBounds(10,10,100,25);
+        JComboBox<Wavetable> wavetables = new JComboBox<>(wavetableArray);
+        wavetables.setSelectedIndex(0);
+        wavetables.setBounds(10,10,100,25);
 
         // Kuuntelija
-        waveforms.addActionListener(this);
+        wavetables.addActionListener(this);
 
         // Lisätään paneeliin
-        add(waveforms);
+        add(wavetables);
 
         // Paneelin tyylittely
         setSize(200,80);
@@ -40,58 +41,32 @@ public class Oscillator extends JPanel implements ActionListener {
     }
 
     public void setFrequency(double frequency) {
-        this.frequency = frequency;
+        // Asetetaan askelväli, jolla wavetablea luetaan
+        this.wavetableStep = (int) (Wavetable.SIZE * frequency / Synth.AudioInfo.SAMPLE_RATE);
     }
 
     public double nextSample() {
-        double sampleRate = (double) Synth.AudioInfo.SAMPLE_RATE;
+        //
+        double sample = wavetable.getSamples()[wavetableIndex];
 
-        // Taajus muutettu hertseistä kulmataajuudeksi
-        double angularFreq = 2*Math.PI * frequency;
+        // Kasvatetaan indeksiä asekeleen verran. Jos ylitetään wavetablen koko, käytetään moduloa.
+        wavetableIndex = (wavetableIndex + wavetableStep) % Wavetable.SIZE;
 
-        // Määritellään apumuuttuja (t jaettuna a:lla). Siis ajankohta jaettuna jakson (äänenkorkeuden) jakson pituudella.
-        // Tarvitaan saha- ja kolmioaalloissa
-        double ta = (wavePosition++ / sampleRate) / ( (double)1 / frequency);
-
-
-        // Aaltojen matemaattiset kaavat katsottu Wikipediasta ja muutettu Javalle
-        switch (currentWaveform) {
-            case Sine:
-                return Math.sin( angularFreq * wavePosition++ / sampleRate);
-
-            case Square:
-                return Math.signum(Math.sin( angularFreq* wavePosition++ / sampleRate));
-
-            case Saw:
-                return (double)2*(ta - Math.floor(0.5 + ta));
-
-            case Triangle:
-                return (double)2* Math.abs( (double)2*(ta - Math.floor(0.5 + ta)) );
-
-            case Nothing:
-                return 0;
-
-            default:
-                throw new RuntimeException("Unknown waveform");
-        }
+        return sample;
     }
 
     // Kun aaltomuotoa vaihdetaan valintaboksista, vaihdetaan myös currentWaveform-muuttujaa.
     // Lopuksi siirretään fokus framelle.
     public void actionPerformed(ActionEvent e) {
         JComboBox cb = (JComboBox) e.getSource();
-        currentWaveform = (Waveform) cb.getSelectedItem();
+        this.wavetable = (Wavetable) cb.getSelectedItem();
         frame.requestFocus();
     }
 
-    public void setWaveform(Waveform waveform) {
-        this.currentWaveform = waveform;
+    public void setWaveform(Wavetable wavetable) {
+        this.wavetable = wavetable;
     }
 
-    // Aaltotyypit
-    public enum Waveform  {
-        Sine, Saw, Square, Triangle, Nothing, Unknown;
-    }
 }
 
 
