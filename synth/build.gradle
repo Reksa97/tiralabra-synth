@@ -19,7 +19,7 @@ dependencies {
 
 apply plugin: 'application'
 
-mainClassName = 'Main'
+mainClassName = 'main.Main'
 
 // Jacoco
 apply plugin: 'jacoco';

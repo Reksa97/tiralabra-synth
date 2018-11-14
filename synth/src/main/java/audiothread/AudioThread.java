@@ -1,6 +1,9 @@
+package audiothread;
+
 // OpenAL importit
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
+import synth.Synth;
 
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.ALC10.*;
@@ -12,8 +15,8 @@ import java.util.function.Supplier;
 public class AudioThread extends Thread {
 
     // Määritellään puskurin koko ja niiden määrä jonossa
-    static final int BUFFER_SIZE = 512;
-    static final int BUFFER_COUNT = 8;
+    public static final int BUFFER_SIZE = 512;
+    public static final int BUFFER_COUNT = 8;
 
     // bufferSupplier nimensä mukaisesti tuottaa puskureita luokalle käytettäväksi
     private final Supplier<short[]> bufferSupplier;
@@ -36,7 +39,7 @@ public class AudioThread extends Thread {
     private boolean closed;
 
     // Konstruktori ottaa argumentiksi puskurin tuottajan
-    AudioThread(Supplier<short[]> bufferSupplier) {
+    public AudioThread(Supplier<short[]> bufferSupplier) {
 
         // Määritellään käytössä oleva laitteen konteksti
         alcMakeContextCurrent(context);
@@ -62,7 +65,7 @@ public class AudioThread extends Thread {
         start();
     }
 
-    boolean isRunning() {
+    public boolean isRunning() {
         return running;
     }
 
@@ -122,13 +125,13 @@ public class AudioThread extends Thread {
     }
 
     // Tätä kutsutaan kun halutaan poistua wait() -silmukasta
-    synchronized void triggerPlayback() {
+    public synchronized void triggerPlayback() {
         running = true;
         notify();
     }
 
     // Suljetaan ohjelma
-    void close() {
+    public void close() {
         closed = true;
         // Poistutaan silmukasta
         triggerPlayback();

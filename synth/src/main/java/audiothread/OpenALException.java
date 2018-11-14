@@ -1,3 +1,5 @@
+package audiothread;
+
 import static org.lwjgl.openal.AL10.*;
 
 public class OpenALException extends RuntimeException {

@@ -1,3 +1,7 @@
+package synth;
+
+import audiothread.*;
+
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -12,7 +16,7 @@ public class Synth {
 
     private boolean shouldGenerate;
 
-    private final JFrame frame = new JFrame ("Synth");
+    private final JFrame frame = new JFrame ("synth.Synth");
 
     public Supplier<short[]> supplier = () -> {
         // Jos ei pidä generoida buffereita, palautetaan null
@@ -38,7 +42,7 @@ public class Synth {
     };
 
 
-    // Luodaan AudioThread olio, joka ottaa argumenttina Supplier<short[]> olion
+    // Luodaan audiothread.AudioThread olio, joka ottaa argumenttina Supplier<short[]> olion
     private final AudioThread audioThread = new AudioThread(supplier);
 
     public AudioThread getAudioThread() {
@@ -107,7 +111,7 @@ public class Synth {
 
     };
 
-    Synth() {
+    public Synth() {
         // Määritellään haluttu määrä oskillaattoreita käyttöön
         for (int i = 0; i < oscillators.length; i++) {
             // Oskillaattorille annetaan parametrina JFrame, jotta fokus saadaan pidettyä siinä.

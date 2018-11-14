@@ -1,7 +1,10 @@
 import static org.junit.Assert.*;
-import java.util.*;
 
 import org.junit.*;
+
+import audiothread.AudioThread;
+import synth.Oscillator;
+import synth.Synth;
 
 import javax.swing.*;
 
@@ -21,8 +24,6 @@ public class SynthTest {
 
         audioThread = synthStub.getAudioThread();
         audioThread.triggerPlayback();
-
-
     }
 
     @Test
