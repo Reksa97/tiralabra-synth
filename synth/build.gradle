@@ -17,6 +17,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
+apply plugin: 'application'
+
+mainClassName = 'Main'
+
 // Jacoco
 apply plugin: 'jacoco';
 jacocoTestReport {
