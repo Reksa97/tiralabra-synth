@@ -3,8 +3,6 @@ package synth;
 import audiothread.*;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -40,7 +38,7 @@ public class Synth {
                 amplitude += osc.nextSample();
             }
             // Skaalataan arvot 16 bittiseksi
-            buffer[i] = (short) (adsr.getAttackNext() * (Short.MAX_VALUE * amplitude / oscillators.length));
+            buffer[i] = (short) (adsr.getEnvelopeNext() * (Short.MAX_VALUE * amplitude / oscillators.length));
         }
         return buffer;
     };
