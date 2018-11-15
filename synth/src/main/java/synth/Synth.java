@@ -3,6 +3,8 @@ package synth;
 import audiothread.*;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -13,14 +15,16 @@ public class Synth {
 
     private Keyboard keyboard = new Keyboard();
     private Oscillator[] oscillators = new Oscillator[3];
+    private ADSR adsr;
 
     private boolean shouldGenerate;
 
     private final JFrame frame = new JFrame ("Synth");
 
     public Supplier<short[]> supplier = () -> {
-        // Jos ei pidä generoida buffereita, palautetaan null
+        // Jos päästetään irti, ei pidä generoida buffereita, palautetaan null
         if (!shouldGenerate) {
+            adsr.resetEnvelopes();
             return null;
         }
         // Muuten luodaan puskurin kokoinen (512) short-array
@@ -36,7 +40,7 @@ public class Synth {
                 amplitude += osc.nextSample();
             }
             // Skaalataan arvot 16 bittiseksi
-            buffer[i] = (short) (Short.MAX_VALUE * amplitude / oscillators.length);
+            buffer[i] = (short) (adsr.getAttackNext() * (Short.MAX_VALUE * amplitude / oscillators.length));
         }
         return buffer;
     };
@@ -64,6 +68,7 @@ public class Synth {
         public void keyPressed(KeyEvent e) {
 
             if (!audioThread.isRunning()) {
+                adsr.resetEnvelopes();
                 switch (e.getKeyChar()) {
                     case 'm':
                         keyboard.octaveUp();
@@ -122,6 +127,20 @@ public class Synth {
             // Tallennetaan se myös ohjelman käytettäväksi
             oscillators[i] = osc;
         }
+
+        this.adsr = new ADSR();
+        // Attackille slideri
+        JSlider attackSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
+        attackSlider.setBounds(0,200,100,100);
+        attackSlider.setMajorTickSpacing(20);
+        attackSlider.setPaintTicks(true);
+        attackSlider.setPaintLabels(true);
+        attackSlider.addChangeListener(e -> {
+            adsr.setAttack(attackSlider.getValue());
+            frame.requestFocus();
+        });
+        frame.add(attackSlider);
+
 
         frame.setFocusable(true);
         frame.addKeyListener(keyAdapter);
