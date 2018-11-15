@@ -12,3 +12,6 @@ halutulle taajuudelle.
 Attack kertoo siis kuinka kauan kestää, että saavutetaan äänenvoimakkuuden huippu. Kun syntikka kerää oskillaattorien aallot 
 yhteen, kerrotaan summa-aalto ADSR-luokalta haetulta envelopen arvolla (0-1). Envelopen arvo muuttuu jokaisella samplella, kun 
 attack ei ole vielä käyty loppuun.
+
+Vein testausta myös eteenpäin, mutta key adaptereiden testejä en ole saanut toimimaan ja siihen tarvitsisin varmaan apua. Tällä 
+viikolla käytin aikaa työhön noin 8 tuntia, josta iso osa meni aiheisiin tutustumiseen.
