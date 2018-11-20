@@ -43,7 +43,7 @@ public class Keyboard {
 
     public double randomFrequency() {
 
-        return 440+rndm.nextDouble()*50;
+        return 20+rndm.nextDouble()*200;
     }
 
     // Metodi etsii painetulle näppäimelle taajuuden
