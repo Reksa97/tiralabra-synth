@@ -32,7 +32,7 @@ public class SynthTest {
 
         oscillators = synthStub.getOscillators();
 
-        keyboard = new Keyboard();
+        keyboard = new Keyboard(synthStub);
 
         frame = synthStub.getFrame();
 

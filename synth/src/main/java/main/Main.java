@@ -11,6 +11,6 @@ public class Main {
 
         System.out.println("Pianon koskettimia vastaa näppäimistön ylin ja toisiksi ylin kirjainrivi.");
         System.out.println("Oktaavin saa vaihdettua ylös merkillä 'm' ja alas merkillä 'n'.");
-        System.out.println("\n \n \n");
+        System.out.println("\n \n \n \n");
     }
 }

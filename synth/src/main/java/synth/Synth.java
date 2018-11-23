@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public class Synth {
 
-    private Keyboard keyboard = new Keyboard();
+    private Keyboard keyboard;
     private Oscillator[] oscillators = new Oscillator[3];
     private ADSR adsr;
     private char lastPressed;
@@ -50,9 +50,6 @@ public class Synth {
             }
             // Skaalataan arvot 16 bittiseksi
             buffer[i] = (short) (envelope * (Short.MAX_VALUE * amplitude / oscillators.length));
-            if (buffer[i] > Short.MAX_VALUE) {
-                System.out.println("vittu");
-            }
         }
         return buffer;
     };
@@ -121,6 +118,8 @@ public class Synth {
      * Määritellään sovelluksen ulkoasu, oskillaattorit ja liu'ut
      */
     public Synth() {
+        this.adsr = new ADSR();
+        this.keyboard = new Keyboard(this);
         // Määritellään haluttu määrä oskillaattoreita käyttöön
         for (int i = 0; i < oscillators.length; i++) {
             // Oskillaattorille annetaan parametrina JFrame, jotta fokus saadaan pidettyä siinä.
@@ -134,7 +133,7 @@ public class Synth {
             oscillators[i] = osc;
         }
 
-        this.adsr = new ADSR();
+
         // Attackille slideri
         JSlider attackSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
         attackSlider.setBounds(0,200,100,100);
@@ -147,9 +146,34 @@ public class Synth {
         });
         frame.add(attackSlider);
 
-        // Decaylle slideri
+        // Decaylle slider
+        JSlider decaySlider = new JSlider(JSlider.VERTICAL, 0, 200, 100);
+        decaySlider.setBounds(80,200,100,100);
+        decaySlider.setMajorTickSpacing(40);
+        decaySlider.setPaintTicks(true);
+        decaySlider.setPaintLabels(true);
+        decaySlider.addChangeListener(e -> {
+            adsr.setDecay(decaySlider.getValue());
+            frame.requestFocus();
+        });
+        adsr.setDecay(100);
+        frame.add(decaySlider);
+
+        // Sustainille slider
+        JSlider sustainSlider = new JSlider(JSlider.VERTICAL, 0, 100, 100);
+        sustainSlider.setBounds(160,200,100,100);
+        sustainSlider.setMajorTickSpacing(20);
+        sustainSlider.setPaintTicks(true);
+        sustainSlider.setPaintLabels(true);
+        sustainSlider.addChangeListener(e -> {
+            adsr.setSustain(sustainSlider.getValue());
+            frame.requestFocus();
+        });
+        frame.add(sustainSlider);
+
+        // Releaselle slideri
         JSlider releaseSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
-        releaseSlider.setBounds(80,200,100,100);
+        releaseSlider.setBounds(240,200,100,100);
         releaseSlider.setMajorTickSpacing(20);
         releaseSlider.setPaintTicks(true);
         releaseSlider.setPaintLabels(true);
@@ -195,6 +219,10 @@ public class Synth {
 
     public JFrame getFrame() {
         return frame;
+    }
+
+    public ADSR getADSR() {
+        return this.adsr;
     }
 
     public void close() {

@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class Keyboard {
 
+    private ADSR adsr;
+
     // Näppäimet vastaavat pianon koskettimia korkeusjärjestyksessä alhaalta ylös.
     char[] keys = {'a', 'w', 's', 'd', 'r', 'f', 't', 'g', 'h', 'u', 'j','i', 'k', 'o', 'l', 'ö', 'å', 'ä'};
 
@@ -24,8 +26,8 @@ public class Keyboard {
     /**
      * lasketaan koskettimien taajuudet
      */
-    public Keyboard() {
-
+    public Keyboard(Synth synth) {
+        this.adsr = synth.getADSR();
         // Matalimman äänen taajuus on 27,5 Hz
         frequencies[0] = 27.5;
         double previousA = 27.5;
@@ -57,7 +59,7 @@ public class Keyboard {
      * @return taajuus, joka vastaa painettua kosketinta, ottaen huomioon käytössä oleva oktaavi
      */
     public double frequencyOf(char keyPressed) {
-        System.out.print(String.format("\033[%dA",3)); // 3 riviä ylös
+        System.out.print(String.format("\033[%dA",4)); // 3 riviä ylös
         System.out.print("\033[2K"); // poistetaan sisältö
 
         // Etsitään indeksi näppäimelle
@@ -134,6 +136,7 @@ public class Keyboard {
         }
 
         // Tulostetaan tietoa käyttäjälle painetusta näppäimestä
+        System.out.println(this.adsr.toString());
         System.out.println("Koskettimen numero: " + (currentOctave*12+indexOfChar));
         System.out.println("Taajuus: "+ Math.round(frequencies[currentOctave*12 + indexOfChar]) + " Hz");
         System.out.println();
