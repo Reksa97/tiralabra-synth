@@ -20,6 +20,9 @@ public class Synth {
 
     private final JFrame frame = new JFrame ("Synth");
 
+    /**
+     * supplier tarjoaa AudioThreadille buffereita, jotka sisältävät syntetisaattorin tuottaman äänen
+     */
     public Supplier<short[]> supplier = () -> {
 
         // Muuten luodaan puskurin kokoinen (512) short-array
@@ -68,18 +71,22 @@ public class Synth {
     // keyAdapter määrittää mitä toimintoja näppäimillä on
     KeyAdapter keyAdapter = new KeyAdapter() {
 
-        // Mitä tahansa näppäintä painettaessa tarkistetaan onko äänisäie käynnissä,
-        // ja tarvittaessa käynnistetään puskirien luominen ja äänen toistaminen.
+
         @Override
         public void keyPressed(KeyEvent e) {
 
             char pressed = e.getKeyChar();
+
+            // jos viimeksi painettu näppäin on eri kuin nyt painettu, on tulossa uusi taajuus
             boolean newFreqComing = lastPressed != pressed;
+            // näppäimellä 0 tulee satunnainen taajuus, joka on myös uusi
             if (e.getKeyChar() == '0') {
                 newFreqComing = true;
             }
 
             if (!audioThread.isRunning() || newFreqComing) {
+                // jos säie ei ole käynnissä, ei sitä pitäisi sammuttaa
+                // jos taas säie on käynnissä ja on tulossa uusi taajuus, pitäisi säie resetoida
                 if (!audioThread.isRunning()) {
                     shouldStopGenerating = false;
                 }   else {
@@ -88,6 +95,7 @@ public class Synth {
 
                 adsr.resetEnvelopes();
                 double frequency = keyboard.frequencyOf(pressed);
+
 
                 if (frequency != -1) {
                     for (Oscillator osc : oscillators) {
@@ -103,10 +111,12 @@ public class Synth {
         @Override
         public void keyReleased(KeyEvent e) {
             adsr.keyLifted();
-            //shouldGenerate = false;
         }
     };
 
+    /**
+     * Määritellään sovelluksen ulkoasu, oskillaattorit ja liu'ut
+     */
     public Synth() {
         // Määritellään haluttu määrä oskillaattoreita käyttöön
         for (int i = 0; i < oscillators.length; i++) {
@@ -134,6 +144,17 @@ public class Synth {
         });
         frame.add(attackSlider);
 
+        // Decaylle slideri
+        JSlider decaySlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
+        decaySlider.setBounds(80,200,100,100);
+        decaySlider.setMajorTickSpacing(20);
+        decaySlider.setPaintTicks(true);
+        decaySlider.setPaintLabels(true);
+        decaySlider.addChangeListener(e -> {
+            adsr.setDecay(decaySlider.getValue());
+            frame.requestFocus();
+        });
+        frame.add(decaySlider);
 
         frame.setFocusable(true);
         frame.addKeyListener(keyAdapter);

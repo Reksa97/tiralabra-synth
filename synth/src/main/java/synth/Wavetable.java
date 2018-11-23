@@ -1,5 +1,8 @@
 package synth;
 
+/**
+ * Sisältää eri aaltotyyppien taulut
+ */
 public enum Wavetable {
     // Aaltotyypit
     Sine, Square, Saw, Triangle;
@@ -34,6 +37,10 @@ public enum Wavetable {
         }
     }
 
+    /**
+     *
+     * @return halutun aaltomuodon yhden aallon samplet
+     */
     public double[] getSamples() {
         return samples;
     }

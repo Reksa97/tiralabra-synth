@@ -38,7 +38,10 @@ public class AudioThread extends Thread {
     // Kun suoritus lopetetaan, closed saa arvon true,
     private boolean closed;
 
-    // Konstruktori ottaa argumentiksi puskurin tuottajan
+    /**
+     *
+     * @param bufferSupplier tuottaa samplepuskureita, jotka lähetetään äänikortille
+     */
     public AudioThread(Supplier<short[]> bufferSupplier) {
 
         // Määritellään käytössä oleva laitteen konteksti
@@ -65,6 +68,10 @@ public class AudioThread extends Thread {
         start();
     }
 
+    /**
+     *
+     * @return onko äänisäie lähettämässä ääntä äänikortille
+     */
     public boolean isRunning() {
         return running;
     }
@@ -124,7 +131,10 @@ public class AudioThread extends Thread {
         alcCloseDevice(device);
     }
 
-    // Tätä kutsutaan kun halutaan poistua wait() -silmukasta
+    /**
+     * Kutsutaan kun halutaan poistua run-metodin while silmukasta, ja lähettää äänikortille puskureita
+     * niin pitkään, kunnes bufferSupplier palauttaa null
+     */
     public synchronized void triggerPlayback() {
         running = true;
         notify();
@@ -138,8 +148,10 @@ public class AudioThread extends Thread {
     }
 
 
-
-    // Metodi puskuroi argumenttina annetut samplet lähteeseen jonoon.
+    /**
+     *
+     * @param samples äänikortille lähetettävät samplet
+     */
     private void bufferSamples(short[] samples) {
         // Valitaan nyt käytössä oleva puskuri ja kasvatetaan indeksiä yhdellä
         int buffer = buffers[bufferIndex];
@@ -158,7 +170,9 @@ public class AudioThread extends Thread {
         }
     }
 
-    // Jos OpenAL tuottaa virheen
+    /**
+     *  Jos OpenAL tuottaa virheen
+     */
     private void catchInternalException() {
         int error = alcGetError(device);
 

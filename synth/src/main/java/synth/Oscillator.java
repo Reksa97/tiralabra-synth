@@ -18,7 +18,10 @@ public class Oscillator extends JPanel implements ActionListener {
 
     private JFrame frame;
 
-    // Konstruktorille annetaan parametrina JFrame-olio, jotta fokus voidaan pitää framessa, eikä oskillaattorissa.
+    /**
+     *
+     * @param frame annetaan parametrina JFrame-olio, jotta fokus voidaan pitää framessa, eikä oskillaattorissa.
+     */
     public Oscillator(JFrame frame) {
         this.frame = frame;
         Wavetable[] wavetableArray = Wavetable.values();
@@ -40,11 +43,19 @@ public class Oscillator extends JPanel implements ActionListener {
         setLayout(null);
     }
 
+    /**
+     *
+     * @param frequency haluttu taajuus hertseinä
+     */
     public void setFrequency(double frequency) {
         // Asetetaan askelväli, jolla wavetablea luetaan
         this.wavetableStep = (int) (Wavetable.SIZE * frequency / Synth.AudioInfo.SAMPLE_RATE);
     }
 
+    /**
+     *
+     * @return wavetableIndexiä vastaava sample
+     */
     public double nextSample() {
         //
         double sample = wavetable.getSamples()[wavetableIndex];
@@ -55,14 +66,21 @@ public class Oscillator extends JPanel implements ActionListener {
         return sample;
     }
 
-    // Kun aaltomuotoa vaihdetaan valintaboksista, vaihdetaan myös currentWaveform-muuttujaa.
-    // Lopuksi siirretään fokus framelle.
+
+    /**
+     *
+     * @param e valintaboksin valinnan vaihto rekisteröidään
+     */
     public void actionPerformed(ActionEvent e) {
         JComboBox cb = (JComboBox) e.getSource();
         this.wavetable = (Wavetable) cb.getSelectedItem();
         frame.requestFocus();
     }
 
+    /**
+     *
+     * @param wavetable aaltomuoto jota halutaan tuottaa
+     */
     public void setWaveform(Wavetable wavetable) {
         this.wavetable = wavetable;
     }

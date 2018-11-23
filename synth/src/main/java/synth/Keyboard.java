@@ -21,6 +21,9 @@ public class Keyboard {
     private Random rndm = new Random();
 
 
+    /**
+     * lasketaan koskettimien taajuudet
+     */
     public Keyboard() {
 
         // Matalimman äänen taajuus on 27,5 Hz
@@ -47,6 +50,12 @@ public class Keyboard {
     }
 
     // Metodi etsii painetulle näppäimelle taajuuden
+
+    /**
+     *
+     * @param keyPressed painetun koskettimen kirjain
+     * @return taajuus, joka vastaa painettua kosketinta, ottaen huomioon käytössä oleva oktaavi
+     */
     public double frequencyOf(char keyPressed) {
         System.out.print(String.format("\033[%dA",3)); // 3 riviä ylös
         System.out.print("\033[2K"); // poistetaan sisältö
@@ -115,8 +124,10 @@ public class Keyboard {
                 return rand;
             case 'n':
                 this.octaveDown();
+                return -1;
             case 'm':
                 this.octaveUp();
+                return -1;
 
                 default:
                     return -1;
@@ -131,21 +142,23 @@ public class Keyboard {
         return frequencies[currentOctave*12 + indexOfChar];
     }
 
+    /**
+     * oktaavi ylös
+     */
     public void octaveUp() {
         if (currentOctave < 5) {
             currentOctave++;
         }
-        System.out.print(String.format("\033[%dA",3));
-        System.out.print("\033[2K");
         System.out.println("Oktaavi:" + currentOctave + "\n \n");
     }
 
+    /**
+     * oktaavi alas
+     */
     public void octaveDown() {
         if (currentOctave > 0) {
             currentOctave--;
         }
-        System.out.print(String.format("\033[%dA",3));
-        System.out.print("\033[2K");
         System.out.println("Oktaavi:" + currentOctave + "\n \n");
     }
 }
