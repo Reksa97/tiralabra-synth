@@ -50,6 +50,9 @@ public class Synth {
             }
             // Skaalataan arvot 16 bittiseksi
             buffer[i] = (short) (envelope * (Short.MAX_VALUE * amplitude / oscillators.length));
+            if (buffer[i] > Short.MAX_VALUE) {
+                System.out.println("vittu");
+            }
         }
         return buffer;
     };
@@ -145,16 +148,17 @@ public class Synth {
         frame.add(attackSlider);
 
         // Decaylle slideri
-        JSlider decaySlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
-        decaySlider.setBounds(80,200,100,100);
-        decaySlider.setMajorTickSpacing(20);
-        decaySlider.setPaintTicks(true);
-        decaySlider.setPaintLabels(true);
-        decaySlider.addChangeListener(e -> {
-            adsr.setDecay(decaySlider.getValue());
+        JSlider releaseSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
+        releaseSlider.setBounds(80,200,100,100);
+        releaseSlider.setMajorTickSpacing(20);
+        releaseSlider.setPaintTicks(true);
+        releaseSlider.setPaintLabels(true);
+        releaseSlider.addChangeListener(e -> {
+            adsr.setRelease(releaseSlider.getValue());
             frame.requestFocus();
         });
-        frame.add(decaySlider);
+        frame.add(releaseSlider);
+
 
         frame.setFocusable(true);
         frame.addKeyListener(keyAdapter);

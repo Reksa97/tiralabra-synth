@@ -7,8 +7,8 @@ public class ADSR {
     // kertoo kuinka paljon kerroin kasvaa jokaisessa samplessa
     private double attackInc;
 
-    private boolean decayStarted;
-    private double decayDec;
+    private boolean releaseStarted;
+    private double releaseDec;
 
 
     private int sampleRate;
@@ -18,8 +18,8 @@ public class ADSR {
         this.envelopeNext = 0;
         this.attackInc = 1;
         this.attackDone = false;
-        this.decayDec = 1;
-        this.decayStarted = false;
+        this.releaseDec = 1;
+        this.releaseStarted = false;
     }
 
     /**
@@ -42,16 +42,16 @@ public class ADSR {
             }
         }
         // kun päästetty koskettimesta irti, alkaa decay
-        if (decayStarted) {
+        if (releaseStarted) {
             env = this.envelopeNext;
-            envelopeNext -= decayDec;
+            envelopeNext -= releaseDec;
         }
 
         if (env > 1) {
             env = 1;
             envelopeNext = 1;
         }
-        /*
+        /* jos halutaan nähdä envelopen määrä terminaalista
         System.out.print(String.format("\033[%dA",3)); // 3 riviä ylös
         System.out.print("\033[2K"); // poistetaan sisältö
         System.out.println(env  + " atk: " + attackDone +" dec: "+ decayStarted + "\n \n"); */
@@ -62,7 +62,7 @@ public class ADSR {
      * kun koskettimesta päästetään irti, alkaa decay, jolloin attackin täytyy loppua
      */
     public void keyLifted() {
-        this.decayStarted = true;
+        this.releaseStarted = true;
         this.attackDone = true;
     }
 
@@ -82,12 +82,16 @@ public class ADSR {
         }
     }
 
-    public void setDecay(int amount) {
+    /**
+     *
+     * @param amount aseta releaselle arvo väliltä 0-100
+     */
+    public void setRelease(int amount) {
         if (amount <= 0 || amount > 100) {
-            decayDec = 1;
+            releaseDec = 0.2;
         }   else {
-            // kun amount=100, on decayn kesto 2 sekuntia. 50 -> 1 sekuntti ja 25 -> 0,5 sekuntia
-            decayDec = (1d/(sampleRate * (amount/50d)));
+            // kun amount=100, on releasen kesto 2 sekuntia. 50 -> 1 sekuntti ja 25 -> 0,5 sekuntia
+            releaseDec = (1d/(sampleRate * (amount/50d)));
         }
     }
 
@@ -97,7 +101,7 @@ public class ADSR {
     public void resetEnvelopes() {
         this.envelopeNext = 0;
         this.attackDone = false;
-        this.decayStarted = false;
+        this.releaseStarted = false;
     }
 
 }
