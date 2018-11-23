@@ -2,35 +2,54 @@ package synth;
 
 public class ADSR {
     // attackNext kertoo seuraavan samplen kertoimen kun attackDone = false
-    private double attackNext;
+    private double envelopeNext;
     private boolean attackDone;
     // kertoo kuinka paljon kerroin kasvaa jokaisessa samplessa
     private double attackInc;
+
+    private boolean decayStarted;
+    private double decayDec;
+
 
     private int sampleRate;
 
     public ADSR() {
         this.sampleRate = Synth.AudioInfo.SAMPLE_RATE;
-        this.attackNext = 0;
+        this.envelopeNext = 0;
         this.attackInc = 1;
         this.attackDone = false;
+        this.decayDec = 1;
+        this.decayStarted = false;
     }
 
     public double getEnvelopeNext() {
-        // jos envelopet
+
         double env = 1;
+
+        if (decayStarted) {
+            env = this.envelopeNext;
+            envelopeNext -= decayDec;
+            //return env;
+        }
 
         // jos attack ei ole vielä käsitelty
         if (!attackDone) {
-            env = this.attackNext;
-            attackNext += attackInc;
+            env = this.envelopeNext;
+            envelopeNext += attackInc;
             if (env >= 1) {
                 this.attackDone = true;
             }
-            return env;
         }
 
+        if (env > 1) {
+            env = 1;
+        }
         return env;
+    }
+
+    public void keyLifted() {
+        this.decayStarted = true;
+        this.attackDone = true;
     }
 
     public void setAttack(int amount) {
@@ -40,17 +59,23 @@ public class ADSR {
         }
 
         if (amount == 0) {
-            attackNext = 1;
+            envelopeNext = 1;
             attackInc = 1;
             attackDone = true;
+            decayStarted = true;
+            decayDec = 1;
         }   else {
             // kun amount=100, on attackin kesto 2 sekuntia. 50 -> 1 sekuntti ja 25 -> 0,5 sekuntia
-            attackInc = (1d/(sampleRate * (amount/50d)));
+            attackInc =  5*(1d/(sampleRate * (amount/50d)));
+            decayDec = (1d/(sampleRate * (amount/50d)));
+
         }
     }
 
     public void resetEnvelopes() {
-        this.attackNext = 0;
+        this.envelopeNext = 0;
         this.attackDone = false;
+        this.decayStarted = false;
     }
+
 }

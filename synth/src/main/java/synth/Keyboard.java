@@ -43,11 +43,13 @@ public class Keyboard {
 
     public double randomFrequency() {
 
-        return 20+rndm.nextDouble()*200;
+        return 40+rndm.nextDouble()*800;
     }
 
     // Metodi etsii painetulle näppäimelle taajuuden
     public double frequencyOf(char keyPressed) {
+        System.out.print(String.format("\033[%dA",3)); // 3 riviä ylös
+        System.out.print("\033[2K"); // poistetaan sisältö
 
         // Etsitään indeksi näppäimelle
         int indexOfChar = -1;
@@ -107,6 +109,15 @@ public class Keyboard {
             case 'ä':
                 indexOfChar = 17;
                 break;
+            case '0':
+                double rand = this.randomFrequency();
+                System.out.println("Satunnainen taajuus: " + rand + " Hz \n \n");
+                return rand;
+            case 'n':
+                this.octaveDown();
+            case 'm':
+                this.octaveUp();
+
                 default:
                     return -1;
         }
@@ -123,14 +134,18 @@ public class Keyboard {
     public void octaveUp() {
         if (currentOctave < 5) {
             currentOctave++;
-            System.out.println("Oktaavi:" + currentOctave);
         }
+        System.out.print(String.format("\033[%dA",3));
+        System.out.print("\033[2K");
+        System.out.println("Oktaavi:" + currentOctave + "\n \n");
     }
 
     public void octaveDown() {
         if (currentOctave > 0) {
             currentOctave--;
-            System.out.println("Oktaavi: " + currentOctave);
         }
+        System.out.print(String.format("\033[%dA",3));
+        System.out.print("\033[2K");
+        System.out.println("Oktaavi:" + currentOctave + "\n \n");
     }
 }

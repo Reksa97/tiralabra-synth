@@ -14,17 +14,14 @@ public class Synth {
     private Keyboard keyboard = new Keyboard();
     private Oscillator[] oscillators = new Oscillator[3];
     private ADSR adsr;
-
-    private boolean shouldGenerate;
+    private char lastPressed;
+    private double envelope;
+    private boolean shouldStopGenerating;
 
     private final JFrame frame = new JFrame ("Synth");
 
     public Supplier<short[]> supplier = () -> {
-        // Jos päästetään irti, ei pidä generoida buffereita, palautetaan null
-        if (!shouldGenerate) {
-            adsr.resetEnvelopes();
-            return null;
-        }
+
         // Muuten luodaan puskurin kokoinen (512) short-array
         short[] buffer = new short[AudioThread.BUFFER_SIZE];
 
@@ -32,13 +29,24 @@ public class Synth {
         // Näytteenottotaajuus on 44100Hz, joten yhteen sekuntiin tulee 220 aaltoa.
         for (int i = 0; i < AudioThread.BUFFER_SIZE; i++) {
             double amplitude = 0;
+            envelope = adsr.getEnvelopeNext();
+            if (envelope > 1) {
+                System.out.println(envelope);
+            }
+
+            // Kun envolope saa negatiivisen arvon, lopetetaan generointi
+            if (envelope < 0 || shouldStopGenerating) {
+                adsr.resetEnvelopes();
+                shouldStopGenerating = false;
+                return null;
+            }
 
             // Summataan kaikkien oskillaattorien aallot tietyssä ajankohdassa. Saadaan summa-aalto
             for (Oscillator osc : oscillators) {
                 amplitude += osc.nextSample();
             }
             // Skaalataan arvot 16 bittiseksi
-            buffer[i] = (short) (adsr.getEnvelopeNext() * (Short.MAX_VALUE * amplitude / oscillators.length));
+            buffer[i] = (short) (envelope * (Short.MAX_VALUE * amplitude / oscillators.length));
         }
         return buffer;
     };
@@ -65,50 +73,37 @@ public class Synth {
         @Override
         public void keyPressed(KeyEvent e) {
 
-            if (!audioThread.isRunning()) {
-                adsr.resetEnvelopes();
-                switch (e.getKeyChar()) {
-                    case 'm':
-                        keyboard.octaveUp();
-                        break;
-
-                    case 'n':
-                        keyboard.octaveDown();
-                        break;
-
-                    case '0':
-
-                        double frequency = keyboard.randomFrequency();
-
-                        for (Oscillator osc : oscillators) {
-                            osc.setFrequency(frequency);
-                        }
-
-                        shouldGenerate = true;
-                        audioThread.triggerPlayback();
-
-                        break;
-
-                    default:
-                        frequency = keyboard.frequencyOf(e.getKeyChar());
-
-                        if (frequency != -1) {
-                            for (Oscillator osc : oscillators) {
-                                osc.setFrequency(frequency);
-                            }
-
-                            shouldGenerate = true;
-                            audioThread.triggerPlayback();
-                        }
-                }
+            char pressed = e.getKeyChar();
+            boolean newFreqComing = lastPressed != pressed;
+            if (e.getKeyChar() == '0') {
+                newFreqComing = true;
             }
 
+            if (!audioThread.isRunning() || newFreqComing) {
+                if (!audioThread.isRunning()) {
+                    shouldStopGenerating = false;
+                }   else {
+                    shouldStopGenerating = true;
+                }
+
+                adsr.resetEnvelopes();
+                double frequency = keyboard.frequencyOf(pressed);
+
+                if (frequency != -1) {
+                    for (Oscillator osc : oscillators) {
+                        osc.setFrequency(frequency);
+                    }
+                    audioThread.triggerPlayback();
+                }
+            }
+            lastPressed = e.getKeyChar();
         }
 
         // Kun päästetään näppäimistä irti, lopetetaan äänen toistaminen.
         @Override
         public void keyReleased(KeyEvent e) {
-            shouldGenerate = false;
+            adsr.keyLifted();
+            //shouldGenerate = false;
         }
     };
 
