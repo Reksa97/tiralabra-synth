@@ -59,8 +59,9 @@ public class Keyboard {
      * @return taajuus, joka vastaa painettua kosketinta, ottaen huomioon käytössä oleva oktaavi
      */
     public double frequencyOf(char keyPressed) {
-        System.out.print(String.format("\033[%dA",4)); // 3 riviä ylös
-        System.out.print("\033[2K"); // poistetaan sisältö
+        /*System.out.print(String.format("\033[%dA",4)); // 3 riviä ylös
+        System.out.print("\033[2K"); // poistetaan sisältö */
+
 
         // Etsitään indeksi näppäimelle
         int indexOfChar = -1;
@@ -152,6 +153,7 @@ public class Keyboard {
         if (currentOctave < 5) {
             currentOctave++;
         }
+
         System.out.println("Oktaavi:" + currentOctave + "\n \n");
     }
 
