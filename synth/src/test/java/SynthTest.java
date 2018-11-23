@@ -9,25 +9,17 @@ import synth.Synth;
 import synth.Wavetable;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class SynthTest {
     Synth synthStub;
     AudioThread audioThread;
     Oscillator[] oscillators;
     Keyboard keyboard;
-    Robot robot;
 
     JFrame frame;
 
     @Before
     public void setUp() {
-        try {
-            robot = new Robot();
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
-
         synthStub = new Synth();
 
         oscillators = synthStub.getOscillators();
