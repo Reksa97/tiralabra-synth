@@ -1,10 +1,14 @@
 # tiralabra-synth
+
+## Dokumentaatio
 [Määrittelydokumentti](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/specifications.md)
 
 [Toteutusdokumentti](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/implementation.md)
 
 [Testausdokumentti](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/testing.md)
 
+
+### Viikkoraportit
 
 [Viikko 1](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/week1.md)
 
