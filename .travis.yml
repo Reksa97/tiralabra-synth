@@ -1,5 +1,7 @@
 language: java
-before_script: cd synth
+before_script: 
+  - cd synth
+  - java -Djava.awt.headless=true
 
 script:
   - ./gradlew check
