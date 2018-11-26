@@ -1,7 +1,5 @@
 package synth;
 
-import javax.swing.*;
-
 // Oskillaattori tuottaa erilaisia aaltoja.
 public class Oscillator {
 
@@ -11,8 +9,6 @@ public class Oscillator {
 
     private int wavetableIndex;
     private int wavetableStep;
-
-    private JFrame frame;
 
     public Oscillator() {
         wavetableIndex = 0;
