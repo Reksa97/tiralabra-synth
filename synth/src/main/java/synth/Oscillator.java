@@ -1,13 +1,9 @@
 package synth;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-
-// Oskillaattori tuottaa erilaisia aaltoja. Tässä luokka toimii myös paneelina JFramessa.
-public class Oscillator extends JPanel implements ActionListener {
+// Oskillaattori tuottaa erilaisia aaltoja.
+public class Oscillator {
 
     // Oletusaaltomuotona Sini-aalto
     private Wavetable wavetable = Wavetable.Sine;
@@ -18,29 +14,9 @@ public class Oscillator extends JPanel implements ActionListener {
 
     private JFrame frame;
 
-    /**
-     *
-     * @param frame annetaan parametrina JFrame-olio, jotta fokus voidaan pitää framessa, eikä oskillaattorissa.
-     */
-    public Oscillator(JFrame frame) {
-        this.frame = frame;
-        Wavetable[] wavetableArray = Wavetable.values();
-
-        // Valintaboksi
-        JComboBox<Wavetable> wavetables = new JComboBox<>(wavetableArray);
-        wavetables.setSelectedIndex(0);
-        wavetables.setBounds(10,10,100,25);
-
-        // Kuuntelija
-        wavetables.addActionListener(this);
-
-        // Lisätään paneeliin
-        add(wavetables);
-
-        // Paneelin tyylittely
-        setSize(200,80);
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        setLayout(null);
+    public Oscillator() {
+        wavetableIndex = 0;
+        wavetableStep = 1;
     }
 
     /**
@@ -66,23 +42,13 @@ public class Oscillator extends JPanel implements ActionListener {
         return sample;
     }
 
-
-    /**
-     *
-     * @param e valintaboksin valinnan vaihto rekisteröidään
-     */
-    public void actionPerformed(ActionEvent e) {
-        JComboBox cb = (JComboBox) e.getSource();
-        this.wavetable = (Wavetable) cb.getSelectedItem();
-        frame.requestFocus();
-    }
-
     /**
      *
      * @param wavetable aaltomuoto jota halutaan tuottaa
      */
     public void setWaveform(Wavetable wavetable) {
         this.wavetable = wavetable;
+        this.wavetableIndex = 0;
     }
 
 }

@@ -1,42 +1,26 @@
 import static org.junit.Assert.*;
 
 import org.junit.*;
+import synth.*;
 
-import audiothread.AudioThread;
-import synth.Keyboard;
-import synth.Oscillator;
-import synth.Synth;
-import synth.Wavetable;
-
-import javax.swing.*;
 
 public class SynthTest {
-    Synth synthStub;
-    AudioThread audioThread;
-    Oscillator[] oscillators;
+    Synth synth;
+    Oscillator oscillator;
     Keyboard keyboard;
+    ADSR adsr;
 
-    JFrame frame;
 
     @Before
     public void setUp() {
-        synthStub = new Synth();
+        this.keyboard = new Keyboard();
+        this.oscillator = new Oscillator();
+        this.adsr = new ADSR();
 
-        oscillators = synthStub.getOscillators();
 
-        keyboard = new Keyboard(synthStub);
-
-        frame = synthStub.getFrame();
-
-        audioThread = synthStub.getAudioThread();
-        audioThread.triggerPlayback();
+        this.synth = new Synth(adsr, keyboard, new Oscillator[]{oscillator, new Oscillator()});
     }
 
-    @Test
-    public void isRunningReturnsSomething() {
-        boolean isRunning = audioThread.isRunning();
-        System.out.println("isRunning: " + isRunning);
-    }
 
     @Test
     public void audioInfo() {
@@ -46,40 +30,39 @@ public class SynthTest {
 
     @Test
     public void setFrequencyDoesSomething() {
-        oscillators[0].setFrequency(10);
+        oscillator.setFrequency(10);
     }
 
     @Test
     public void setWaveformDoesSomething() {
-        oscillators[0].setWaveform(Wavetable.Saw);
+        oscillator.setWaveform(Wavetable.Saw);
     }
 
     @Test
     public void nextSampleDoesSomething() {
-        double sample = oscillators[0].nextSample();
+        double sample = oscillator.nextSample();
         System.out.println("nextSampleDoesSomething: " + sample);
     }
 
     @Test
     public void nextSampleOutputsAllWaveforms() {
-        oscillators[0].setWaveform(Wavetable.Sine);
-        double sample = oscillators[0].nextSample();
-        System.out.println("nextSampleOutputsAllWaveforms (Sine): " + sample);
-
-        oscillators[0].setWaveform(Wavetable.Saw);
-        sample = oscillators[0].nextSample();
-        System.out.println("nextSampleOutputsAllWaveforms (Saw): " + sample);
-
-        oscillators[0].setWaveform(Wavetable.Square);
-        sample = oscillators[0].nextSample();
-        System.out.println("nextSampleOutputsAllWaveforms (Square): " + sample);
-
-        oscillators[0].setWaveform(Wavetable.Triangle);
-        sample = oscillators[0].nextSample();
-        System.out.println("nextSampleOutputsAllWaveforms (Triangle): " + sample);
-
+        oscillator.setWaveform(Wavetable.Sine);
+        double sample = oscillator.nextSample();
         assertEquals(0, sample, 0.0001);
 
+
+        oscillator.setWaveform(Wavetable.Saw);
+        sample = oscillator.nextSample();
+        assertEquals(0, sample, 0.0001);
+
+
+        oscillator.setWaveform(Wavetable.Square);
+        sample = oscillator.nextSample();
+        assertEquals(0, sample, 0.0001);
+
+        oscillator.setWaveform(Wavetable.Triangle);
+        sample = oscillator.nextSample();
+        assertEquals(0, sample, 0.0001);
     }
 
     @Test
@@ -137,15 +120,15 @@ public class SynthTest {
     }
 
     @Test
+    public void synthSupplierSuppliesArrays() {
+        short[] shorts = new short[3];
+        assertEquals(shorts.getClass(), synth.supplier.get().getClass());
+    }
+
+    @Test
     public void randomFrequencyReturnsSomethingPositive() {
         assertTrue(keyboard.randomFrequency() >= 0);
     }
-
-    @After
-    public void close() {
-        synthStub.close();
-    }
-
 
 
 }
