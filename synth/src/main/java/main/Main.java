@@ -9,6 +9,8 @@ public class Main {
         // erase terminal
         //System.out.print("\033[H\033[2J");
 
+        System.setProperty("java.awt.headless", "true");
+
         System.out.println("Pianon koskettimia vastaa näppäimistön ylin ja toisiksi ylin kirjainrivi.");
         System.out.println("Oktaavin saa vaihdettua ylös merkillä 'm' ja alas merkillä 'n'.");
         System.out.println("\n \n \n \n");
