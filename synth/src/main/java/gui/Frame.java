@@ -19,16 +19,13 @@ public class Frame {
     private ADSR adsr;
     private Keyboard keyboard;
     private OscillatorPanel[] oscillatorPanels = new OscillatorPanel[3];
-
+    private char lastPressed;
 
     // Luodaan audiothread.AudioThread olio, joka ottaa argumenttina Supplier<short[]> olion
     private AudioThread audioThread;
 
-    private char lastPressed;
-
-
     // keyAdapter määrittää mitä toimintoja näppäimillä on
-    KeyAdapter keyAdapter = new KeyAdapter() {
+    private KeyAdapter keyAdapter = new KeyAdapter() {
 
         @Override
         public void keyPressed(KeyEvent e) {
@@ -49,12 +46,9 @@ public class Frame {
                     synth.setShouldStopGenerating(false);
                 }   else {
                     synth.setShouldStopGenerating(true);
-
                 }
-
                 adsr.resetEnvelopes();
                 double frequency = keyboard.frequencyOf(pressed);
-
 
                 if (frequency != -1) {
                     for (OscillatorPanel osc : oscillatorPanels) {
@@ -93,7 +87,7 @@ public class Frame {
 
         adsr = new ADSR();
         keyboard = new Keyboard();
-        synth = new Synth(adsr, keyboard, oscillators);
+        synth = new Synth(adsr, oscillators);
         audioThread = new AudioThread(synth.supplier);
 
 

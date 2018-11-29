@@ -3,10 +3,10 @@ Tarkoituksena on toteuttaa digitaalinen syntetisaattori, jolla voidaan tuottaa s
 sekä mahdollisesti VCF-suodattimilla(filttereillä).
 
 Kun painetaan kosketinta syntetisaattorissa:
-* Attack määrittelee ajan, missä ääni saavuttaa kovimman voimakkuutensa.
-* Decay määrittelee ajan, missä ääni laskee sustain-tasolle.
-* Sustain määrittelee äänenvoimakkuuden, missä ääni pysyy, kun kosketinta pidetään pohjassa.
-* Release määrittelee ajan, missä ääni laskee nollaan koskettimen vapauduttua.
+  * Attack määrittelee ajan, missä ääni saavuttaa kovimman voimakkuutensa.
+  * Decay määrittelee ajan, missä ääni laskee sustain-tasolle.
+  * Sustain määrittelee äänenvoimakkuuden, missä ääni pysyy, kun kosketinta pidetään pohjassa.
+  * Release määrittelee ajan, missä ääni laskee nollaan koskettimen vapauduttua.
 
 Ohjelma saa syötteenä näppäimistöltä äänen korkeuden ja pituuden, sekä valitut ADSR-arvot, joiden avulla ääni muokataan halutuksi.
 
@@ -35,8 +35,8 @@ taajuuksien laskemisen aikavaativuus O(n).
 Kosketinta painettaessa etsitään sen indeksi. Listalta etsimisen aikavaativuus olisi O(n), mutta toteutetaan se nyt Javan
 switch -toiminnolla, joka on luultavasti nopeampi. Tähän voisi keksiä ja toteuttaa itse jonkin systeemin.
 
-
 ### Käytössä olevat koskettimet ja niitä vastaavat sävelet
+
 a = A
 
 w = A#/Bb
@@ -87,5 +87,3 @@ n = oktaavi alaspäin
 [Wikipedia - Aaltotyypit](https://en.wikipedia.org/wiki/Non-sinusoidal_waveform)
 
 [OpenAL](https://www.openal.org/documentation/OpenAL_Programmers_Guide.pdf)
-
-

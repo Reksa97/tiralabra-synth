@@ -1,4 +1,5 @@
-package synth;// Määritellään keyboard, jossa on 18 kosketinta. Lisäksi oktaavia voidaan vaihtaa, joten voidaan soittaa
+package synth;
+// Määritellään keyboard, jossa on 18 kosketinta. Lisäksi oktaavia voidaan vaihtaa, joten voidaan soittaa
 // laajemmalta skaalalta.
 
 import java.util.Random;

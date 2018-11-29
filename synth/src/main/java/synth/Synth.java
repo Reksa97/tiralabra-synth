@@ -6,7 +6,6 @@ import java.util.function.Supplier;
 
 public class Synth {
 
-    private Keyboard keyboard;
     private Oscillator[] oscillators;
     private ADSR adsr;
     private double envelope;
@@ -46,9 +45,8 @@ public class Synth {
     /**
      * Määritellään sovelluksen ulkoasu, oskillaattorit ja liu'ut
      */
-    public Synth(ADSR adsr, Keyboard keyboard, Oscillator[] oscillators) {
+    public Synth(ADSR adsr, Oscillator[] oscillators) {
         this.adsr = adsr;
-        this.keyboard = keyboard;
         this.oscillators = oscillators;
 
     }

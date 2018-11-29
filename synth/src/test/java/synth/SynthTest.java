@@ -1,36 +1,27 @@
 package synth;
 
 import static org.junit.Assert.*;
-
 import org.junit.*;
-
 
 public class SynthTest {
     Synth synth;
     Oscillator oscillator;
-    Keyboard keyboard;
     ADSR adsr;
-
 
     @Before
     public void setUp() {
-        this.keyboard = new Keyboard();
         this.oscillator = new Oscillator();
         this.adsr = new ADSR();
 
 
-        this.synth = new Synth(adsr, keyboard, new Oscillator[]{oscillator, new Oscillator()});
+        this.synth = new Synth(adsr, new Oscillator[]{oscillator, new Oscillator()});
     }
-
 
     @Test
     public void audioInfo() {
         new Synth.AudioInfo();
         assertEquals(44100, Synth.AudioInfo.SAMPLE_RATE);
     }
-
-
-
 
     @Test
     public void synthSupplierSuppliesArrays() {
@@ -50,5 +41,4 @@ public class SynthTest {
         synth.setShouldStopGenerating(true);
         assertEquals(null, synth.supplier.get());
     }
-
 }
