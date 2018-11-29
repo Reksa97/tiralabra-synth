@@ -23,6 +23,7 @@ public class ADSR {
     private int attackAmount;
     private int decayAmount;
     private int sustainAmount;
+
     private int releaseAmount;
 
     private int sampleRate;
@@ -72,7 +73,7 @@ public class ADSR {
             //System.out.println("decay");
             env = envelopeNext;
             envelopeNext -= decayDec;
-            if (env <= sustainValue) {
+            if (env < sustainValue) {
                 envelopeNext = sustainValue;
                 decayDone = true;
                 sustainStarted = true;
@@ -166,6 +167,38 @@ public class ADSR {
             // kun amount=100, on releasen kesto 2 sekuntia. 50 -> 1 sekuntti ja 25 -> 0,5 sekuntia
             releaseDec = (1d/(sampleRate * (amount/50d)));
         }
+    }
+
+    public int getAttack() {
+        return attackAmount;
+    }
+
+    public double getAttackInc() {
+        return attackInc;
+    }
+
+    public int getDecay() {
+        return decayAmount;
+    }
+
+    public double getDecayDec() {
+        return decayDec;
+    }
+
+    public int getSustain() {
+        return sustainAmount;
+    }
+
+    public double getSustainValue() {
+        return sustainValue;
+    }
+
+    public int getRelease() {
+        return releaseAmount;
+    }
+
+    public double getReleaseDec() {
+        return releaseDec;
     }
 
     /**

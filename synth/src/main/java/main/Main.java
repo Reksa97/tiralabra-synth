@@ -1,7 +1,6 @@
 package main;
 
 import gui.Frame;
-import synth.*;
 
 public class Main {
 

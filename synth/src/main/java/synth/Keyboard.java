@@ -162,4 +162,8 @@ public class Keyboard {
         }
         System.out.println("Oktaavi:" + currentOctave + "\n \n");
     }
+
+    public int getCurrentOctave() {
+        return currentOctave;
+    }
 }

@@ -25,11 +25,8 @@ public class Synth {
         for (int i = 0; i < AudioThread.BUFFER_SIZE; i++) {
             double amplitude = 0;
             envelope = adsr.getEnvelopeNext();
-            if (envelope > 1) {
-                System.out.println(envelope);
-            }
 
-            // Kun envolope saa negatiivisen arvon, lopetetaan generointi
+            // Kun envolope saa negatiivisen arvon, eli release on mennyt loppuun, lopetetaan generointi
             if (envelope < 0 || shouldStopGenerating) {
                 adsr.resetEnvelopes();
                 shouldStopGenerating = false;
