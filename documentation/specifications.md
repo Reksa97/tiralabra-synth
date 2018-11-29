@@ -42,46 +42,31 @@ Kosketin määrittää soivan sävelen, eli käytössä olevan taajuuden. Sävel
 saa kertomalla tai jakamalla taajuuden kahdella. Oktaavi jaetaan 12 säveleen (puolisävelaskeleeseen) ja seuraavan saa edeltävästä kertomalla sen kahden kahdennellatoista juurella (noin 1.0594630943593). Kun koskettimien määrä on n, on niiden
 taajuuksien laskemisen aikavaativuus O(n).
 
-Kosketinta painettaessa etsitään sen indeksi. Listalta etsimisen aikavaativuus olisi O(n), mutta toteutetaan se nyt Javan
-switch -toiminnolla, joka on luultavasti nopeampi. Tähän voisi keksiä ja toteuttaa itse jonkin systeemin.
+Kosketinta painettaessa etsitään sen indeksi. Listalta etsimisen aikavaativuus olisi O(n). Käytetään arrayta, jossa on näppäimen koodin kertomassa indeksissä koskettimen indeksi. Näin päästään aikavaativuuteen O(1).
 
 ### Käytössä olevat koskettimet ja niitä vastaavat sävelet
+| Näppäin | Sävel |
+|---------|-------|
+| a | A |
+| w | A#/Bb |
+| s | B |
+| d | C |
+| r | C#/Db |
+| f | D |
+| t | D#/Eb |
+| g | E |
+| h | F |
+| u | F#/Gb |
+| j | G |
+| i | G#/Ab |
+| k | A |
+| o | A#/Bb |
+| l | B |
+| ö | C |
+| å | C#/Db |
+| ä | D |
 
-a = A
 
-w = A#/Bb
-
-s = B
-
-d = C
-
-r = C#/Db
-
-f = D
-
-t = D#/Eb
-
-g = E
-
-h = F
-
-u = F#/Gb
-
-j = G
-
-i = G#/Ab
-
-k = A
-
-o = A#/Bb
-
-l = B
-
-ö = C
-
-å = C#/Db
-
-ä = D
 
 #### Lisäksi
 
