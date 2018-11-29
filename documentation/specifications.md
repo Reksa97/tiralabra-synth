@@ -66,15 +66,12 @@ Kosketinta painettaessa etsitään sen indeksi. Listalta etsimisen aikavaativuus
 | å | C#/Db |
 | ä | D |
 
-
-
 #### Lisäksi
-
-m = oktaavi ylöspäin
-
-n = oktaavi alaspäin
-
-0 = satunnainen sävel
+| Näppäin | Toiminto |
+|---|---|
+| m | oktaavi ylöspäin |
+| n | oktaavi alaspäin |
+| 0 | satunnainen sävel |
 
 ##### Lähteet
 [Wikipedia - ADSR](https://fi.wikipedia.org/wiki/ADSR)
