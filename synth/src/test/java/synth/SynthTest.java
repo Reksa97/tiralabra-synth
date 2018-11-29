@@ -24,21 +24,21 @@ public class SynthTest {
     }
 
     @Test
-    public void synthSupplierSuppliesArrays() {
+    public void synthNextBufferReturnsArrays() {
         short[] shorts = new short[3];
-        assertEquals(shorts.getClass(), synth.supplier.get().getClass());
+        assertEquals(shorts.getClass(), synth.getNextBuffer().getClass());
     }
 
     @Test
-    public void whenReleaseIsOverSupplierReturnsNull() {
+    public void whenReleaseIsOverNextBufferIsNull() {
         adsr.setRelease(1);
         adsr.keyLifted();
-        assertEquals(null, synth.supplier.get());
+        assertEquals(null, synth.getNextBuffer());
     }
 
     @Test
-    public void whenShouldStopGeneratingIsSetToTrueSupplierReturnsNull() {
+    public void whenShouldStopGeneratingIsSetToTrueNextBufferISNull() {
         synth.setShouldStopGenerating(true);
-        assertEquals(null, synth.supplier.get());
+        assertEquals(null, synth.getNextBuffer());
     }
 }

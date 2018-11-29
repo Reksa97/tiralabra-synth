@@ -88,7 +88,7 @@ public class Frame {
         adsr = new ADSR();
         keyboard = new Keyboard();
         synth = new Synth(adsr, oscillators);
-        audioThread = new AudioThread(synth.supplier);
+        audioThread = new AudioThread(synth);
 
 
         // Attackille slideri

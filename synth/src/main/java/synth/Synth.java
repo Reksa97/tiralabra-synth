@@ -2,8 +2,6 @@ package synth;
 
 import audiothread.*;
 
-import java.util.function.Supplier;
-
 public class Synth {
 
     private Oscillator[] oscillators;
@@ -12,10 +10,9 @@ public class Synth {
     private boolean shouldStopGenerating;
 
     /**
-     * supplier tarjoaa AudioThreadille buffereita, jotka sisältävät syntetisaattorin tuottaman äänen
+     * getNextBuffer tarjoaa AudioThreadille buffereita, jotka sisältävät syntetisaattorin tuottaman äänen
      */
-    public Supplier<short[]> supplier = () -> {
-
+    public short[] getNextBuffer() {
         // Muuten luodaan puskurin kokoinen (512) short-array
         short[] buffer = new short[AudioThread.BUFFER_SIZE];
 
@@ -40,7 +37,7 @@ public class Synth {
             buffer[i] = (short) (envelope * (Short.MAX_VALUE * amplitude / oscillators.length));
         }
         return buffer;
-    };
+    }
 
     /**
      * Määritellään sovelluksen ulkoasu, oskillaattorit ja liu'ut

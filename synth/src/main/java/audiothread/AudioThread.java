@@ -18,8 +18,8 @@ public class AudioThread extends Thread {
     public static final int BUFFER_SIZE = 512;
     public static final int BUFFER_COUNT = 8;
 
-    // bufferSupplier nimensä mukaisesti tuottaa puskureita luokalle käytettäväksi
-    private final Supplier<short[]> bufferSupplier;
+    // Synth luokan metodi getNextBuffer tuottaa samplepuskureita
+    private Synth synth;
 
     // 8 puskuria ja indeksi joka käy niitä läpi
     private final int[] buffers = new int[BUFFER_COUNT];
@@ -30,8 +30,6 @@ public class AudioThread extends Thread {
     private final long context = alcCreateContext(device, new int[1]);
     private final int source;
 
-
-
     // Tuotetaanko ääntä vai ei
     private boolean running;
 
@@ -40,9 +38,10 @@ public class AudioThread extends Thread {
 
     /**
      *
-     * @param bufferSupplier tuottaa samplepuskureita, jotka lähetetään äänikortille
+     * @param synth tuottaa metodilla getNewBuffer samplepuskureita,
+     *              jotka lähetetään äänikortille
      */
-    public AudioThread(Supplier<short[]> bufferSupplier) {
+    public AudioThread(Synth synth) {
 
         // Määritellään käytössä oleva laitteen konteksti
         alcMakeContextCurrent(context);
@@ -50,8 +49,7 @@ public class AudioThread extends Thread {
         // Määritellään mitä laitteella on mahdollista tehdä
         AL.createCapabilities(ALC.createCapabilities(device));
 
-        // Asetetaan argumentiksi saatu puskurin tuottaja luokan puskurin tuottajaksi
-        this.bufferSupplier = bufferSupplier;
+        this.synth = synth;
 
         // Generoidaan lähde, jonka kautta toistetaan puskurissa olevat samplet
         source = alGenSources();
@@ -98,8 +96,8 @@ public class AudioThread extends Thread {
 
             // Jokainen prosessoitu puskuri korvataan uudella
             for (int i = 0; i < processedBuffers; i++) {
-                // Getataan puskurien tuottajalta uusi puskuri
-                short[] samples = bufferSupplier.get();
+                // Getataan synthiltä uusi puskuri
+                short[] samples = synth.getNextBuffer();
 
                 // Jos tuottaja ei halua tuottaa puskuria, kytketään äänen toistaminen pois päältä
                 if (samples == null) {
@@ -147,7 +145,6 @@ public class AudioThread extends Thread {
         triggerPlayback();
     }
 
-
     /**
      *
      * @param samples äänikortille lähetettävät samplet
@@ -181,6 +178,4 @@ public class AudioThread extends Thread {
             throw new OpenALException(error);
         }
     }
-
-
 }
