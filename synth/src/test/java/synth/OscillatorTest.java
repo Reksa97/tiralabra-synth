@@ -12,7 +12,7 @@ public class OscillatorTest {
     public void setUp() {
         oscillator = new Oscillator();
     }
-    
+
     @Test
     public void setFrequencyDoesSomething() {
         oscillator.setFrequency(10);
