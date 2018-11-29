@@ -1,6 +1,6 @@
 ## Toteutusdokumentti
 
-Sovellus sisältää kolme pakkausta
+Sovellus sisältää neljä pakkausta
 
 ### main
 
@@ -23,3 +23,9 @@ Wavetable-luokka sisältää aaltomuotojen wavetablet.
 
 ADSR-luokka vastaa envelopeista. Synth-luokka hakee jokaiselle samplelle kertoimen tältä luokalta. Kerroin vaihtuu sliderien 
 valintojen mukaan.
+
+Synth-pakkaukselle on myös testipakkaus, joka sisältää yksikkötestit kaikille pakkauksen luokille.
+
+### utils
+Pakkauksessa on tällä hetkellä vain yksi luokka KeyCodeToKeyboardIndex, jonka avulla Keyboard muuttaa sille annetun näppäimen 
+koodin koskettimen indeksiksi. Koskettimien indeksit menevät äänenkorkeuden mukaisesti. Merkkien `ö`, `å` ja `ä` koodit ovat paljon suuremmat kuin muiden, joten ne muutetaan pienemmeksi ja saadaan aikaan 88-kokoinen int-array, josta saadaan koodeilla (0-88) niitä vastaava koskettimen indeksi. Esimerkiksi näppäintä `h` vastaava koskettimen indeksi löytyy int-arrayn indeksistä `72`, joka on näppäimen KeyEvent-koodi. 
