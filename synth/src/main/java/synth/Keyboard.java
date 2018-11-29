@@ -2,12 +2,11 @@ package synth;
 // Määritellään keyboard, jossa on 18 kosketinta. Lisäksi oktaavia voidaan vaihtaa, joten voidaan soittaa
 // laajemmalta skaalalta.
 
+import utils.KeyCodeToKeyboardIndex;
+
 import java.util.Random;
 
 public class Keyboard {
-
-    // Näppäimet vastaavat pianon koskettimia korkeusjärjestyksessä alhaalta ylös.
-    char[] keys = {'a', 'w', 's', 'd', 'r', 'f', 't', 'g', 'h', 'u', 'j','i', 'k', 'o', 'l', 'ö', 'å', 'ä'};
 
     // Määritellään 78 soitettavaa taajuutta
     double[] frequencies = new double[78];
@@ -21,11 +20,16 @@ public class Keyboard {
     // Häröilyyn
     private Random rndm = new Random();
 
+    // Luokan avulla muutetaan koodi indeksiksi
+    private KeyCodeToKeyboardIndex codeToIndex;
+
 
     /**
      * lasketaan koskettimien taajuudet
      */
     public Keyboard() {
+        codeToIndex = new KeyCodeToKeyboardIndex();
+
         // Matalimman äänen taajuus on 27,5 Hz
         frequencies[0] = 27.5;
         double previousA = 27.5;
@@ -56,88 +60,34 @@ public class Keyboard {
      * @param keyPressed painetun koskettimen kirjain
      * @return taajuus, joka vastaa painettua kosketinta, ottaen huomioon käytössä oleva oktaavi
      */
-    public double frequencyOf(char keyPressed) {
-        /*System.out.print(String.format("\033[%dA",4)); // 3 riviä ylös
-        System.out.print("\033[2K"); // poistetaan sisältö */
+    public double frequencyOf(int keyPressed) {
+        System.out.print(String.format("\033[%dA",5)); // 5 riviä ylös
+        System.out.print("\033[2K"); // poistetaan sisältö
 
 
         // Etsitään indeksi näppäimelle
-        int indexOfChar = -1;
+        int indexOfChar = codeToIndex.getKeyboardIndex(keyPressed);
 
-        switch (keyPressed) {
-            case 'a':
-                indexOfChar = 0;
-                break;
-            case 'w':
-                indexOfChar = 1;
-                break;
-            case 's':
-                indexOfChar = 2;
-                break;
-            case 'd':
-                indexOfChar = 3;
-                break;
-            case 'r':
-                indexOfChar = 4;
-                break;
-            case 'f':
-                indexOfChar = 5;
-                break;
-            case 't':
-                indexOfChar = 6;
-                break;
-            case 'g':
-                indexOfChar = 7;
-                break;
-            case 'h':
-                indexOfChar = 8;
-                break;
-            case 'u':
-                indexOfChar = 9;
-                break;
-            case 'j':
-                indexOfChar = 10;
-                break;
-            case 'i':
-                indexOfChar = 11;
-                break;
-            case 'k':
-                indexOfChar = 12;
-                break;
-            case 'o':
-                indexOfChar = 13;
-                break;
-            case 'l':
-                indexOfChar = 14;
-                break;
-            case 'ö':
-                indexOfChar = 15;
-                break;
-            case 'å':
-                indexOfChar = 16;
-                break;
-            case 'ä':
-                indexOfChar = 17;
-                break;
-            case '0':
-                double rand = this.randomFrequency();
-                System.out.println("Satunnainen taajuus: " + rand + " Hz \n \n");
-                return rand;
-            case 'n':
+        if (indexOfChar > 17 || indexOfChar < 0) {
+            if (indexOfChar == 18) {
                 this.octaveDown();
                 return -1;
-            case 'm':
+            } else if (indexOfChar == 19) {
                 this.octaveUp();
                 return -1;
-
-                default:
-                    return -1;
+            } else if (indexOfChar == 20) {
+                double rand = this.randomFrequency();
+                System.out.println("\n\nSatunnainen taajuus: " + rand + " Hz  \n\n");
+                return rand;
+            }   else {
+                System.out.println("\n\n\n\n");
+                return -1;
+            }
         }
 
         // Tulostetaan tietoa käyttäjälle painetusta näppäimestä
-        System.out.println("Koskettimen numero: " + (currentOctave*12+indexOfChar));
-        System.out.println("Taajuus: "+ Math.round(frequencies[currentOctave*12 + indexOfChar]) + " Hz");
-        System.out.println();
+        System.out.println("\nKoskettimen numero: " + (currentOctave*12+indexOfChar));
+        System.out.println("Taajuus: "+ Math.round(frequencies[currentOctave*12 + indexOfChar]) + " Hz\t\t\t\t\t \n\n");
 
         // Katsotaan toistettava taajuus listalta ottamalla huomioon oktaavi (Oktaavissa on 12 sävelaskelta).
         return frequencies[currentOctave*12 + indexOfChar];
@@ -151,7 +101,7 @@ public class Keyboard {
             currentOctave++;
         }
 
-        System.out.println("Oktaavi:" + currentOctave + "\n \n");
+        System.out.println("\n\n\nOktaavi:" + currentOctave + " \n");
     }
 
     /**
@@ -161,7 +111,7 @@ public class Keyboard {
         if (currentOctave > 0) {
             currentOctave--;
         }
-        System.out.println("Oktaavi:" + currentOctave + "\n \n");
+        System.out.println("\n\n\nOktaavi:" + currentOctave + "\n");
     }
 
     public int getCurrentOctave() {

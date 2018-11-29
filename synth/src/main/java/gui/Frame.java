@@ -19,7 +19,7 @@ public class Frame {
     private ADSR adsr;
     private Keyboard keyboard;
     private OscillatorPanel[] oscillatorPanels = new OscillatorPanel[3];
-    private char lastPressed;
+    private int lastPressed;
 
     // Luodaan audiothread.AudioThread olio, joka ottaa argumenttina Supplier<short[]> olion
     private AudioThread audioThread;
@@ -29,11 +29,10 @@ public class Frame {
 
         @Override
         public void keyPressed(KeyEvent e) {
-
-            char pressed = e.getKeyChar();
+            int pressedKeyCode = e.getExtendedKeyCode();
 
             // jos viimeksi painettu näppäin on eri kuin nyt painettu, on tulossa uusi taajuus
-            boolean newFreqComing = lastPressed != pressed;
+            boolean newFreqComing = lastPressed != pressedKeyCode;
             // näppäimellä 0 tulee satunnainen taajuus, joka on myös uusi
             if (e.getKeyChar() == '0') {
                 newFreqComing = true;
@@ -48,7 +47,7 @@ public class Frame {
                     synth.setShouldStopGenerating(true);
                 }
                 adsr.resetEnvelopes();
-                double frequency = keyboard.frequencyOf(pressed);
+                double frequency = keyboard.frequencyOf(pressedKeyCode);
 
                 if (frequency != -1) {
                     for (OscillatorPanel osc : oscillatorPanels) {
@@ -57,7 +56,7 @@ public class Frame {
                     audioThread.triggerPlayback();
                 }
             }
-            lastPressed = e.getKeyChar();
+            lastPressed = pressedKeyCode;
         }
 
         // Kun päästetään näppäimistä irti, lopetetaan äänen toistaminen.

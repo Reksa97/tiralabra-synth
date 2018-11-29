@@ -19,13 +19,13 @@ public class KeyboardTest {
         char[] keys = {'a', 'w', 's', 'd', 'r', 'f', 't', 'g', 'h', 'u', 'j','i', 'k', 'o', 'l', 'ö', 'å', 'ä', '0'};
         for (int i = 0; i < keys.length; i++) {
             char key = keys[i];
-            assertTrue(keyboard.frequencyOf(key) > 0);
+            assertTrue(keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar(key)) > 0);
         }
     }
 
     @Test
     public void keyNotOnKeyboardHasNoFrequency() {
-        assertTrue(keyboard.frequencyOf('z') == -1);
+        assertTrue(keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('z')) == -1);
     }
 
     @Test
@@ -35,9 +35,9 @@ public class KeyboardTest {
 
     @Test
     public void octaveUpDoublesFrequency() {
-        double freq = keyboard.frequencyOf('a');
+        double freq = keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('a'));
         keyboard.octaveUp();
-        assertEquals(2*freq, keyboard.frequencyOf('a'), 0.01);
+        assertEquals(2*freq, keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('a')), 0.01);
 
     }
 
@@ -48,16 +48,16 @@ public class KeyboardTest {
         keyboard.octaveUp();
         keyboard.octaveUp();
         keyboard.octaveUp();
-        double freq = keyboard.frequencyOf('a');
+        double freq = keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('a'));
         keyboard.octaveUp();
-        assertEquals(freq, keyboard.frequencyOf('a'),0.01);
+        assertEquals(freq, keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('a')),0.01);
     }
 
     @Test
     public void octaveDownHalvesFrequency() {
-        double freq = keyboard.frequencyOf('a');
+        double freq = keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('a'));
         keyboard.octaveDown();
-        assertEquals(freq/2,keyboard.frequencyOf('a'), 0.01);
+        assertEquals(freq/2,keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('a')), 0.01);
     }
 
     @Test
@@ -67,18 +67,18 @@ public class KeyboardTest {
         keyboard.octaveDown();
         keyboard.octaveDown();
         keyboard.octaveDown();
-        double freq = keyboard.frequencyOf('a');
+        double freq = keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('a'));
         keyboard.octaveDown();
-        assertEquals(freq, keyboard.frequencyOf('a'),0.01);
+        assertEquals(freq, keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('a')),0.01);
 
     }
 
     @Test
     public void octaveUpAndDownWorkWithFrequencyOf() {
         int octave = keyboard.getCurrentOctave();
-        keyboard.frequencyOf('n');
+        keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('n'));
         assertEquals(octave-1, keyboard.getCurrentOctave());
-        keyboard.frequencyOf('m');
+        keyboard.frequencyOf(java.awt.event.KeyEvent.getExtendedKeyCodeForChar('m'));
         assertEquals(octave, keyboard.getCurrentOctave());
     }
 }
