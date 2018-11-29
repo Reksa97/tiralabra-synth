@@ -22,3 +22,5 @@
 [Viikko 3](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/week3.md)
 
 [Viikko 4](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/week4.md)
+
+[Viikko 5](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/week5.md)
