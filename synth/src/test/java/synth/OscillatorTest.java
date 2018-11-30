@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class OscillatorTest {
     private Oscillator oscillator;
@@ -14,19 +15,23 @@ public class OscillatorTest {
     }
 
     @Test
-    public void setFrequencyDoesSomething() {
+    public void setFrequencyChangesWavestepCorrectly() {
         oscillator.setFrequency(10);
+        int step = oscillator.getWavetableStep();
+        oscillator.setFrequency(1000);
+        assertTrue(step < oscillator.getWavetableStep());
     }
 
     @Test
-    public void setWaveformDoesSomething() {
+    public void setWaveformSetsWaveform() {
         oscillator.setWaveform(Wavetable.Saw);
+        assertEquals(Wavetable.Saw, oscillator.getWavetable());
     }
 
     @Test
-    public void nextSampleDoesSomething() {
+    public void nextSampleIsBetweenMinusOneAndOne() {
         double sample = oscillator.nextSample();
-        System.out.println("nextSampleDoesSomething: " + sample);
+        assertTrue(sample <= 1 && sample >= -1);
     }
 
     @Test

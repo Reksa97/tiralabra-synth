@@ -24,6 +24,10 @@ public class Oscillator {
         this.wavetableStep = (int) (Wavetable.SIZE * frequency / Synth.AudioInfo.SAMPLE_RATE);
     }
 
+    public int getWavetableStep() {
+        return this.wavetableStep;
+    }
+
     /**
      *
      * @return wavetableIndexiä vastaava sample
@@ -45,6 +49,10 @@ public class Oscillator {
     public void setWaveform(Wavetable wavetable) {
         this.wavetable = wavetable;
         this.wavetableIndex = 0;
+    }
+
+    public Wavetable getWavetable() {
+        return this.wavetable;
     }
 
 }

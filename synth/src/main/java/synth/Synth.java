@@ -6,7 +6,6 @@ public class Synth {
 
     private Oscillator[] oscillators;
     private ADSR adsr;
-    private double envelope;
     private boolean shouldStopGenerating;
 
     /**
@@ -20,7 +19,7 @@ public class Synth {
         // Näytteenottotaajuus on 44100Hz, joten yhteen sekuntiin tulee 220 aaltoa.
         for (int i = 0; i < AudioThread.BUFFER_SIZE; i++) {
             double amplitude = 0;
-            envelope = adsr.getEnvelopeNext();
+            double envelope = adsr.getEnvelopeNext();
 
             // Kun envolope saa negatiivisen arvon, eli release on mennyt loppuun, lopetetaan generointi
             if (envelope < 0 || shouldStopGenerating) {

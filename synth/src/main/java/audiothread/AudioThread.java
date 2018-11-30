@@ -8,9 +8,6 @@ import synth.Synth;
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.ALC10.*;
 
-// Tämän voisi toteuttaa itse myöhemmin
-import java.util.function.Supplier;
-
 // Tässä luokassa
 public class AudioThread extends Thread {
 

@@ -9,7 +9,7 @@ import java.util.Random;
 public class Keyboard {
 
     // Määritellään 78 soitettavaa taajuutta
-    double[] frequencies = new double[78];
+    private double[] frequencies = new double[78];
 
     // Tasavireessä sävel nousee puolisävelaskelta kun se kerrotaan kahden kahdennellatoista juurella
     public static final double TWELTH_ROOT_OF_TWO = 1.0594630943593;

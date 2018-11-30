@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 import org.junit.*;
 
 public class SynthTest {
-    Synth synth;
-    Oscillator oscillator;
-    ADSR adsr;
+    private Synth synth;
+    private Oscillator oscillator;
+    private ADSR adsr;
 
     @Before
     public void setUp() {
