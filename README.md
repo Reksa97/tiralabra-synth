@@ -4,9 +4,10 @@
 
 [![codecov](https://codecov.io/gh/Reksa97/tiralabra-synth/branch/master/graph/badge.svg)](https://codecov.io/gh/Reksa97/tiralabra-synth)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5644facbb0584cd0af8522bb5902e0be)](https://www.codacy.com/app/Reksa97/tiralabra-synth?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Reksa97/tiralabra-synth&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ab3dcf3ccf2244c1a1be8baa74b1e4e9)](https://www.codacy.com/app/Reksa97/tiralabra-synth?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Reksa97/tiralabra-synth&amp;utm_campaign=Badge_Grade)
 
 ## Dokumentaatio
+
 [Määrittelydokumentti](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/specifications.md)
 
 [Toteutusdokumentti](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/implementation.md)
