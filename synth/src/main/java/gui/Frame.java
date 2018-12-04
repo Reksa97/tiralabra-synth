@@ -7,6 +7,7 @@ import synth.Oscillator;
 import synth.Synth;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -20,6 +21,7 @@ public class Frame {
     private Keyboard keyboard;
     private OscillatorPanel[] oscillatorPanels = new OscillatorPanel[3];
     private int lastPressed;
+    private JPanel sliderPanel;
 
     // Luodaan audiothread.AudioThread olio, joka ottaa argumenttina Supplier<short[]> olion
     private AudioThread audioThread;
@@ -70,6 +72,7 @@ public class Frame {
         frame = new JFrame ("Synth");
 
         Oscillator[] oscillators = new Oscillator[oscillatorPanels.length];
+
         for (int i = 0; i < oscillatorPanels.length; i++) {
             // Oskillaattorille annetaan parametrina JFrame, jotta fokus saadaan pidettyä siinä.
             Oscillator osc = new Oscillator();
@@ -77,7 +80,7 @@ public class Frame {
             OscillatorPanel oscPanel = new OscillatorPanel(frame, osc);
 
             // Sijoitellaan horisontaalisesti
-            oscPanel.setLocation(5+(i*205),5);
+            oscPanel.setLocation(370+(i*205),5);
             frame.add(oscPanel);
 
             // Tallennetaan se myös ohjelman käytettäväksi
@@ -89,55 +92,53 @@ public class Frame {
         synth = new Synth(adsr, oscillators);
         audioThread = new AudioThread(synth);
 
-
         // Attackille slideri
         JSlider attackSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
-        attackSlider.setBounds(0,200,100,100);
         attackSlider.setMajorTickSpacing(20);
-        attackSlider.setPaintTicks(true);
-        attackSlider.setPaintLabels(true);
         attackSlider.addChangeListener(e -> {
             adsr.setAttack(attackSlider.getValue());
             frame.requestFocus();
         });
-        frame.add(attackSlider);
-
         // Decaylle slider
         JSlider decaySlider = new JSlider(JSlider.VERTICAL, 0, 200, 100);
-        decaySlider.setBounds(80,200,100,100);
         decaySlider.setMajorTickSpacing(40);
-        decaySlider.setPaintTicks(true);
-        decaySlider.setPaintLabels(true);
         decaySlider.addChangeListener(e -> {
             adsr.setDecay(decaySlider.getValue());
             frame.requestFocus();
         });
         adsr.setDecay(100);
-        frame.add(decaySlider);
 
         // Sustainille slider
         JSlider sustainSlider = new JSlider(JSlider.VERTICAL, 0, 100, 100);
-        sustainSlider.setBounds(160,200,100,100);
         sustainSlider.setMajorTickSpacing(20);
-        sustainSlider.setPaintTicks(true);
-        sustainSlider.setPaintLabels(true);
         sustainSlider.addChangeListener(e -> {
             adsr.setSustain(sustainSlider.getValue());
             frame.requestFocus();
         });
-        frame.add(sustainSlider);
 
         // Releaselle slideri
         JSlider releaseSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
-        releaseSlider.setBounds(240,200,100,100);
         releaseSlider.setMajorTickSpacing(20);
-        releaseSlider.setPaintTicks(true);
-        releaseSlider.setPaintLabels(true);
         releaseSlider.addChangeListener(e -> {
             adsr.setRelease(releaseSlider.getValue());
             frame.requestFocus();
         });
-        frame.add(releaseSlider);
+
+        String[] sliderNames = {"Attack", "Decay", "Sustain", "Release"};
+        JSlider[] envelopeSliders = {attackSlider, decaySlider, sustainSlider, releaseSlider};
+        for (int i = 0; i < envelopeSliders.length; i++) {
+            JSlider slider = envelopeSliders[i];
+            slider.setPaintTicks(true);
+            slider.setPaintLabels(true);
+
+            JLabel label = new JLabel(sliderNames[i]);
+            label.setLocation(12 + i*80, 5);
+            label.setSize(label.getPreferredSize());
+            frame.add(label);
+
+            slider.setBounds(5 + i*80,20,100,180);
+            frame.add(slider);
+        }
 
         this.frame.setFocusable(true);
         frame.addKeyListener(keyAdapter);
@@ -154,7 +155,7 @@ public class Frame {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         // Ikkunan koko
-        frame.setSize(625,350);
+        frame.setSize(1250,250);
 
         // Ikkunaa ei voida muuttaa eri kokoiseksi
         frame.setResizable(false);
@@ -166,6 +167,14 @@ public class Frame {
         // Asetetaan näkyväksi.
         frame.setVisible(true);
 
+    }
+
+    public void addSlider(JSlider s, String description)
+    {
+        JPanel panel = new JPanel();
+        panel.add(s);
+        panel.add(new JLabel(description));
+        sliderPanel.add(panel);
     }
 
 
