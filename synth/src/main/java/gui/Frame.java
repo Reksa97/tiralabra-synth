@@ -19,7 +19,7 @@ public class Frame {
     private Synth synth;
     private ADSR adsr;
     private Keyboard keyboard;
-    private OscillatorPanel[] oscillatorPanels = new OscillatorPanel[3];
+    private OscillatorPanel[] oscillatorPanels = new OscillatorPanel[8];
     private int lastPressed;
     private JPanel sliderPanel;
 
@@ -80,7 +80,11 @@ public class Frame {
             OscillatorPanel oscPanel = new OscillatorPanel(frame, osc);
 
             // Sijoitellaan horisontaalisesti
-            oscPanel.setLocation(370+(i*205),5);
+            if (i >= 4) {
+                oscPanel.setLocation(370+ (i-4)*205, 120);
+            }   else {
+                oscPanel.setLocation(370+(i*205),5);
+            }
             frame.add(oscPanel);
 
             // Tallennetaan se myös ohjelman käytettäväksi
