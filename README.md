@@ -14,6 +14,11 @@
 
 [Testausdokumentti](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/testing.md)
 
+### Käyttöönotto
+
+Ladattuasi projektin, suorita `synth` kansiossa komennot `./gradlew build` ja                                  
+`java -jar build/libs/synth-1.0-all.jar` tai vaihtoehtoisesti `./gradlew run`.
+
 ### Viikkoraportit
 
 [Viikko 1](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/week1.md)
