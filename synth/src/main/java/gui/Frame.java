@@ -19,7 +19,7 @@ public class Frame {
     private Synth synth;
     private ADSR adsr;
     private Keyboard keyboard;
-    private OscillatorPanel[] oscillatorPanels = new OscillatorPanel[8];
+    private OscillatorPanel[] oscillatorPanels;
     private int lastPressed;
     private JPanel sliderPanel;
 
@@ -68,21 +68,24 @@ public class Frame {
         }
     };
 
-    public Frame() {
+    public Frame(int howManyOscillators) {
         frame = new JFrame ("Synth");
 
-        Oscillator[] oscillators = new Oscillator[oscillatorPanels.length];
+        Oscillator[] oscillators = new Oscillator[howManyOscillators];
+        this.oscillatorPanels = new OscillatorPanel[howManyOscillators];
 
-        for (int i = 0; i < oscillatorPanels.length; i++) {
+        for (int i = 0; i < howManyOscillators; i++) {
             // Oskillaattorille annetaan parametrina JFrame, jotta fokus saadaan pidettyä siinä.
             Oscillator osc = new Oscillator();
             oscillators[i] = osc;
             OscillatorPanel oscPanel = new OscillatorPanel(frame, osc);
 
-            // Sijoitellaan horisontaalisesti
+            // Sijoitellaan oskillaattorit
             if (i >= 4) {
+                // alarivi
                 oscPanel.setLocation(370+ (i-4)*205, 120);
             }   else {
+                // ylärivi
                 oscPanel.setLocation(370+(i*205),5);
             }
             frame.add(oscPanel);
@@ -172,16 +175,5 @@ public class Frame {
         frame.setVisible(true);
 
     }
-
-    public void addSlider(JSlider s, String description)
-    {
-        JPanel panel = new JPanel();
-        panel.add(s);
-        panel.add(new JLabel(description));
-        sliderPanel.add(panel);
-    }
-
-
-
 
 }

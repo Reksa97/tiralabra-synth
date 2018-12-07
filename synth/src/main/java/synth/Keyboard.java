@@ -77,7 +77,7 @@ public class Keyboard {
                 return -1;
             } else if (indexOfChar == 20) {
                 double rand = this.randomFrequency();
-                System.out.println("\n\nSatunnainen taajuus: " + rand + " Hz  \n\n");
+                System.out.println("\n\nSatunnainen taajuus: " + Math.round(rand) + " Hz  \n\n");
                 return rand;
             }   else {
                 System.out.println("\n\n\n\n");
@@ -87,7 +87,7 @@ public class Keyboard {
 
         // Tulostetaan tietoa käyttäjälle painetusta näppäimestä
         System.out.println("\nKoskettimen numero: " + (currentOctave*12+indexOfChar));
-        System.out.println("Taajuus: "+ Math.round(frequencies[currentOctave*12 + indexOfChar]) + " Hz\t\t\t\t\t \n\n");
+        System.out.println("Taajuus: "+ Math.round(frequencies[currentOctave*12 + indexOfChar]) + " Hz  " + "          \n\n");
 
         // Katsotaan toistettava taajuus listalta ottamalla huomioon oktaavi (Oktaavissa on 12 sävelaskelta).
         return frequencies[currentOctave*12 + indexOfChar];
