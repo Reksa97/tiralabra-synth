@@ -5,16 +5,13 @@ import org.junit.*;
 
 public class SynthTest {
     private Synth synth;
-    private Oscillator oscillator;
     private ADSR adsr;
 
     @Before
     public void setUp() {
-        this.oscillator = new Oscillator();
         this.adsr = new ADSR();
-
-
-        this.synth = new Synth(adsr, new Oscillator[]{oscillator, new Oscillator()});
+        
+        this.synth = new Synth(adsr, new Oscillator[]{new Oscillator(), new Oscillator()});
     }
 
     @Test
