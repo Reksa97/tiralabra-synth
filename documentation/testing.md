@@ -21,4 +21,34 @@ Myös paikallisesti voidaan ajaa jUnit testejä ja luoda raportteja Jacocolla. R
 Codacy tarkkailee koodin laatua, antaa korjausehdotuksia ja koodin laatua kuvaavan arvosanan.
 
 ### Empiirinen testaus
-Tarkoituksena on testata ainakin prosessoinnin vaativuutta kun oskillaattorien määrää kasvatetaan.
+
+Testasin oskillaattorien määrän ja prosessointitehon vaativuuden yhteyttä mutta huomasin, että osuus prosessorin käytöstä pysyi koko ajan samana. Kun oskillaattorien määrä kasvatettiin yli 8000, pitkien äänten toistaminen alkoi pätkiä ja poksua.
+
+Oskillaattoreiden määrän ja sovelluksen käyttämän muistin määrän yhteys on kuitenkin selvä.
+
+oskillaattorit | muisti (MiB)
+-----|-----
+1 | 59.0
+2 | 59.5
+4 | 60.0
+8 | 60.5
+16 | 61.0
+32 | 62.0
+64 | 66.0
+128 | 67.5
+256 | 77.0
+512 | 96.0
+1024 | 148.5
+2028 | 182.0
+4096 | 243.0
+8192 | 480.0
+
+Testasin myös wavetablejen täyttämiseen menevän ajan suhdetta niiden kokoon. Sovelluksessa käytetään normaalisti kokoa 8192. Näyttäisi siltä, että taulun koon n suhteen sen täyttämisen aikavaativuus on O(n).
+
+koko | kesto (ms)
+---- | ----
+2048 | 7.2 
+4096 | 14.3
+8192 | 31.5
+16384 | 73.0
+32768 | 103.4
