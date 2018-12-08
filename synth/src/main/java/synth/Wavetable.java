@@ -13,6 +13,8 @@ public enum Wavetable {
     private final double[] samples = new double[SIZE];
 
     static {
+        long start = System.nanoTime();
+
         final double freq = 1d / (SIZE / (double) Synth.AudioInfo.SAMPLE_RATE);
         // Taajus muutettu hertseistä kulmataajuudeksi
         final double angularFreq = 2*Math.PI * freq;
@@ -35,6 +37,10 @@ public enum Wavetable {
 
             Triangle.samples[i] = 2d * Math.abs(Saw.samples[i]);
         }
+        long end = System.nanoTime();
+        long timeUsed = end-start;
+
+        System.out.println("Wavetablejen alustamiseen meni aikaa: " + (timeUsed/1000000d) + " millisekuntia");
     }
 
     /**

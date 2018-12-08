@@ -7,7 +7,6 @@ import synth.Oscillator;
 import synth.Synth;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -21,7 +20,6 @@ public class Frame {
     private Keyboard keyboard;
     private OscillatorPanel[] oscillatorPanels;
     private int lastPressed;
-    private JPanel sliderPanel;
 
     // Luodaan audiothread.AudioThread olio, joka ottaa argumenttina Supplier<short[]> olion
     private AudioThread audioThread;

@@ -30,6 +30,10 @@ apply plugin: 'application'
 
 mainClassName = 'main.Main'
 
+run {
+    standardInput = System.in
+}
+
 // Jacoco
 apply plugin: 'jacoco';
 jacocoTestReport {
