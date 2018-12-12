@@ -1,11 +1,11 @@
 package synth;
 
-// Oskillaattori tuottaa erilaisia aaltoja.
+/**
+ * Oskillaattori lukee yhden aaltotyypin wavetablea tietyllä taajudella, ja lähettää sampleja pyydettäessä.
+ */
 public class Oscillator {
 
-    // Oletusaaltomuotona Sini-aalto
     private Wavetable wavetable = Wavetable.Sine;
-
 
     private int wavetableIndex;
     private int wavetableStep;
@@ -16,14 +16,17 @@ public class Oscillator {
     }
 
     /**
-     *
-     * @param frequency haluttu taajuus hertseinä
+     * Metodi muuttaa taajuuden askelväliksi, jolla wavetablea luetaan.
+     * @param frequency Haluttu taajuus hertseinä
      */
     public void setFrequency(double frequency) {
-        // Asetetaan askelväli, jolla wavetablea luetaan
         this.wavetableStep = (int) (Wavetable.SIZE * frequency / Synth.AudioInfo.SAMPLE_RATE);
     }
 
+    /**
+     *
+     * @return Askelväli, jolla wavetablea luetaan tällä hetkellä.
+     */
     public int getWavetableStep() {
         return this.wavetableStep;
     }
@@ -44,13 +47,17 @@ public class Oscillator {
 
     /**
      *
-     * @param wavetable aaltomuoto jota halutaan tuottaa
+     * @param wavetable Aaltomuoto jota halutaan tuottaa
      */
     public void setWaveform(Wavetable wavetable) {
         this.wavetable = wavetable;
         this.wavetableIndex = 0;
     }
 
+    /**
+     *
+     * @return Käytössä oleva wavetable tai aaltotyyppi.
+     */
     public Wavetable getWavetable() {
         return this.wavetable;
     }

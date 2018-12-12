@@ -28,6 +28,9 @@ public class ADSR {
 
     private int sampleRate;
 
+    /**
+     * ADSR vastaa envelopejen toiminnasta.
+     */
     public ADSR() {
         this.sampleRate = Synth.AudioInfo.SAMPLE_RATE;
         this.envelopeNext = 0;
@@ -50,16 +53,13 @@ public class ADSR {
     }
 
     /**
-     *
-     * @return seuraava envelopen arvo väliltä 0-1.
+     * Metodi katsoo, mikä envelope on käytössä ja palauttaa seuraavan arvon sen mukaisesti.
+     * @return Seuraava envelopen arvo väliltä 0-1.
      */
     public double getEnvelopeNext() {
-        // jos säätöjä ei käytetä on envelopen arvo tasan 1
         double env = 1;
 
-        // jos attack ei ole vielä käsitelty
         if (!attackDone) {
-            //System.out.println("attack");
             env = envelopeNext;
             this.envelopeNext += attackInc;
             if (env >= 1) {
@@ -68,9 +68,7 @@ public class ADSR {
                 envelopeNext = 1;
             }
         }
-
         if (decayStarted && !decayDone) {
-            //System.out.println("decay");
             env = envelopeNext;
             envelopeNext -= decayDec;
             if (env < sustainValue) {
@@ -79,20 +77,14 @@ public class ADSR {
                 sustainStarted = true;
             }
         }
-
         if (sustainStarted && !sustainDone) {
-            //System.out.println("sustain");
             env = envelopeNext;
             envelopeNext = sustainValue;
         }
-
-        // kun päästetty koskettimesta irti, alkaa release
         if (releaseStarted) {
-            //System.out.println("release");
             env = this.envelopeNext;
             envelopeNext -= releaseDec;
         }
-
         if (env > 1) {
             env = 1;
             envelopeNext = 1;
@@ -105,7 +97,7 @@ public class ADSR {
     }
 
     /**
-     * kun koskettimesta päästetään irti, alkaa decay, jolloin attackin täytyy loppua
+     * Kun koskettimesta päästetään irti, alkaa decay, jolloin attackin täytyy loppua.
      */
     public void keyLifted() {
         this.releaseStarted = true;
@@ -116,7 +108,7 @@ public class ADSR {
 
     /**
      *
-     * @param amount aseta attackille arvo väliltä 0-100
+     * @param amount Aseta attackille arvo väliltä 0-100
      */
     public void setAttack(int amount) {
         attackAmount = amount;
@@ -131,6 +123,10 @@ public class ADSR {
         }
     }
 
+    /**
+     *
+     * @param amount Aseta decaylle arvo väliltä 0-200
+     */
     public void setDecay(int amount) {
         decayAmount = amount;
         if (amount <= 0 || amount > 200) {
@@ -143,6 +139,10 @@ public class ADSR {
         }
     }
 
+    /**
+     *
+     * @param amount Aseta sustainille arvo väliltä 0-100
+     */
     public void setSustain(int amount) {
         sustainAmount = amount;
         if (amount <= 0 || amount >  100) {
@@ -156,7 +156,7 @@ public class ADSR {
 
     /**
      *
-     * @param amount aseta releaselle arvo väliltä 0-100
+     * @param amount Aseta releaselle arvo väliltä 0-100
      */
     public void setRelease(int amount) {
         releaseAmount = amount;
@@ -202,7 +202,7 @@ public class ADSR {
     }
 
     /**
-     * alusta envelopet uudelle äänelle
+     * Resetoi envelopet uutta ääntä varten.
      */
     public void resetEnvelopes() {
         this.envelopeNext = 0;
@@ -214,6 +214,10 @@ public class ADSR {
         this.releaseStarted = false;
     }
 
+    /**
+     *
+     * @return Envelopejen arvot tulostusta varten.
+     */
     @Override
     public String toString() {
         return "A: " + attackAmount + " D: " + decayAmount + " S: " + sustainAmount + " R: " + releaseAmount;

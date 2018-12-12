@@ -2,6 +2,9 @@ package synth;
 
 import audiothread.*;
 
+/**
+ * Luokka kerää samplet oskillaattoreilta ja tekee niistä puskureita AudioThreadille
+ */
 public class Synth {
 
     private Oscillator[] oscillators;
@@ -9,14 +12,13 @@ public class Synth {
     private boolean shouldStopGenerating;
 
     /**
-     * getNextBuffer tarjoaa AudioThreadille buffereita, jotka sisältävät syntetisaattorin tuottaman äänen
+     * Metodi tarjoaa AudioThreadille puskureita, jotka sisältävät syntetisaattorin tuottaman äänen.
+     * Puskurit sisältävät 512 samplea, joihin on summattu kaikkien oskillaattorien yhdet samplet.
+     * Samplet skaalataan 16 bittisiksi, eli välille -32768 - 32767.
      */
     public short[] getNextBuffer() {
-        // Muuten luodaan puskurin kokoinen (512) short-array
         short[] buffer = new short[AudioThread.BUFFER_SIZE];
 
-        // Täytetään array, jossa on 220Hz sini-aallon arvot skaalattuna välille 0-32767.
-        // Näytteenottotaajuus on 44100Hz, joten yhteen sekuntiin tulee 220 aaltoa.
         for (int i = 0; i < AudioThread.BUFFER_SIZE; i++) {
             double amplitude = 0;
             double envelope = adsr.getEnvelopeNext();
@@ -28,18 +30,18 @@ public class Synth {
                 return null;
             }
 
-            // Summataan kaikkien oskillaattorien aallot tietyssä ajankohdassa. Saadaan summa-aalto
             for (Oscillator osc : oscillators) {
                 amplitude += osc.nextSample();
             }
-            // Skaalataan arvot 16 bittiseksi
             buffer[i] = (short) (envelope * (Short.MAX_VALUE * amplitude / oscillators.length));
         }
         return buffer;
     }
 
     /**
-     * Määritellään sovelluksen ulkoasu, oskillaattorit ja liu'ut
+     *
+     * @param adsr Sovlluksen käytössä oleva ADSR
+     * @param oscillators Käytössä olevat oskillaattorit
      */
     public Synth(ADSR adsr, Oscillator[] oscillators) {
         this.adsr = adsr;
@@ -47,12 +49,17 @@ public class Synth {
 
     }
 
+    /**
+     * Luokka sisältää tiedon käytössä olevasta näytteenottotaajuudesta.
+     */
     public static class AudioInfo {
-        // Käytössä on yleinen näytteenottotaajuus 44100 Hz
         public static final int SAMPLE_RATE = 44100;
     }
 
-
+    /**
+     *
+     * @param value true: halutaan lopettaa äänen tuottaminen, false: halutaan jatkaa äänen tuottamista
+     */
     public void setShouldStopGenerating(boolean value) {
         this.shouldStopGenerating = value;
     }

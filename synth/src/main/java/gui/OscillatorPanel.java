@@ -8,14 +8,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * Luokka vastaa oskillaattorin paneelista ja sen muutoksien välittämisestä oskillaattorille.
+ */
 public class OscillatorPanel extends JPanel implements ActionListener {
     private JFrame frame;
     private Oscillator oscillator;
 
     /**
      *
-     * @param frame annetaan parametrina JFrame-olio, jotta fokus voidaan pitää framessa, eikä oskillaattorissa.
+     * @param frame tarvitaan JFrame-olio, jotta fokus voidaan pitää framessa, eikä oskillaattorissa.
+     * @param oscillator Paneelia vastaava oskillaattori
      */
     public OscillatorPanel(JFrame frame, Oscillator oscillator) {
         this.frame = frame;
@@ -50,6 +53,10 @@ public class OscillatorPanel extends JPanel implements ActionListener {
         frame.requestFocus();
     }
 
+    /**
+     *
+     * @param frequency Taajuus, joka asetetaan oskillaattorille
+     */
     public void setFrequency(double frequency) {
         this.oscillator.setFrequency(frequency);
     }

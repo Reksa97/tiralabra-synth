@@ -1,6 +1,5 @@
 package audiothread;
 
-// OpenAL importit
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
 import synth.Synth;
@@ -8,7 +7,10 @@ import synth.Synth;
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.ALC10.*;
 
-// Tässä luokassa
+/**
+ * AudioThread hoitaa kommunikoinnin äänikortin kanssa.
+ * Luokka kerää puskurit ja lähettää ne äänikortille
+ */
 public class AudioThread extends Thread {
 
     // Määritellään puskurin koko ja niiden määrä jonossa
@@ -71,14 +73,14 @@ public class AudioThread extends Thread {
         return running;
     }
 
-    // Metodi on synkronoitu koska käytetään wait() ja notify() -metodeja
+
+    /**
+     * Metodi kerää puskureita Synth-luokalta ja lähettää ne äänikortille
+     */
     @Override
     public synchronized void run() {
 
-        // Ollaan silmukassa kun ohjelmaa ei ole suljettu
         while (!closed) {
-
-            // Odotetaan kunnes laitetaan käyntiin
             while (!running) {
                 try {
                     wait();
@@ -87,38 +89,26 @@ public class AudioThread extends Thread {
                     e.printStackTrace();
                 }
             }
-
-            // Selvitetään kuinka monta puskuria on prosessoitu
             int processedBuffers = alGetSourcei(source, AL_BUFFERS_PROCESSED);
 
-            // Jokainen prosessoitu puskuri korvataan uudella
             for (int i = 0; i < processedBuffers; i++) {
-                // Getataan synthiltä uusi puskuri
                 short[] samples = synth.getNextBuffer();
 
-                // Jos tuottaja ei halua tuottaa puskuria, kytketään äänen toistaminen pois päältä
                 if (samples == null) {
                     running = false;
                     break;
                 }
-
-                // Poistetaan viimeksi prosessoitu puskuri
                 alDeleteBuffers(alSourceUnqueueBuffers(source));
 
-                // Generoidaan uusi puskuri
                 buffers[bufferIndex] = alGenBuffers();
-                // Pusketaan samplet uuteen puskuriin
                 bufferSamples(samples);
 
             }
-
-            // Jos lähde ei toista ääntä, laitetaan se toistamaan
             if (alGetSourcei(source, AL_SOURCE_STATE) != AL_PLAYING) {
                 alSourcePlay(source);
             }
             catchInternalException();
         }
-
         // OpenAL ei käytä automaattista roskienkeräystä, joten kerätään roskat kun ohjelma suljetaan
         alDeleteSources(source);
         alDeleteBuffers(buffers);
@@ -135,10 +125,11 @@ public class AudioThread extends Thread {
         notify();
     }
 
-    // Suljetaan ohjelma
+    /**
+     * Suljetaan ohjelma ja poistutaan run() silmukasta
+     */
     public void close() {
         closed = true;
-        // Poistutaan silmukasta
         triggerPlayback();
     }
 

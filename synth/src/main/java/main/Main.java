@@ -1,11 +1,9 @@
 package main;
 
 import gui.Frame;
-
 import java.util.Scanner;
 
 public class Main {
-
     public static void main(String[] args) {
         // erase terminal
         System.out.print("\033[H\033[2J");
@@ -24,14 +22,9 @@ public class Main {
                     break;
                 }
 
-            } catch (Exception e) {
-
-            }
+            } catch (Exception e) {}
             System.out.println("Valitse luku väliltä 1-8");
         }
-
-
-
         new Frame(oscillators);
 
         System.out.println("Pianon koskettimia vastaa näppäimistön ylin ja toisiksi ylin kirjainrivi.");

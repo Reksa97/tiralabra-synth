@@ -1,27 +1,26 @@
 package synth;
 
 /**
- * Sisältää eri aaltotyyppien taulut
+ * Sisältää sini-, neliö, saha-, ja kolmioaaltojen wavetablet.
+ * Jokaisessa taulussa on yksi aalto jaettu 8192 alkioon.
  */
 public enum Wavetable {
-    // Aaltotyypit
     Sine, Square, Saw, Triangle;
 
-    // Aaltotaulun koko
     public static final int SIZE = 8192;
 
     private final double[] samples = new double[SIZE];
 
+    /**
+     * Täytetään kaikki wavetablet.
+     */
     static {
         long start = System.nanoTime();
 
         final double freq = 1d / (SIZE / (double) Synth.AudioInfo.SAMPLE_RATE);
-        // Taajus muutettu hertseistä kulmataajuudeksi
-        final double angularFreq = 2*Math.PI * freq;
 
+        final double angularFreq = 2*Math.PI * freq; // Taajus muutettu hertseistä kulmataajuudeksi
 
-        // Generoidaan jokaiselle aaltomuodolle aaltotauluihin arvot
-        // Yhteen tauluun tulee siis yksi kokonainen aalto
         for (int i = 0; i < SIZE; i++) {
 
             // Määritellään apumuuttuja (t jaettuna a:lla). Siis ajankohta jaettuna jakson (äänenkorkeuden) jakson pituudella.
@@ -40,7 +39,7 @@ public enum Wavetable {
         long end = System.nanoTime();
         long timeUsed = end-start;
 
-        System.out.println("Wavetablejen alustamiseen meni aikaa: " + (timeUsed/1000000d) + " millisekuntia");
+        System.out.println("Wavetablejen laskemiseen meni aikaa: " + (timeUsed/1000000d) + " millisekuntia");
     }
 
     /**

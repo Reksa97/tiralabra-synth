@@ -6,6 +6,9 @@ import utils.KeyCodeToKeyboardIndex;
 
 import java.util.Random;
 
+/**
+ * Luokka sisältää kaikkien koskettimien toiminnot.
+ */
 public class Keyboard {
 
     // Määritellään 78 soitettavaa taajuutta
@@ -14,18 +17,14 @@ public class Keyboard {
     // Tasavireessä sävel nousee puolisävelaskelta kun se kerrotaan kahden kahdennellatoista juurella
     public static final double TWELTH_ROOT_OF_TWO = 1.0594630943593;
 
-    // Aluksi ollaan alhaalta laskettuna oktaavissa 3
     private int currentOctave = 3;
 
-    // Häröilyyn
     private Random rndm = new Random();
-
-    // Luokan avulla muutetaan koodi indeksiksi
     private KeyCodeToKeyboardIndex codeToIndex;
 
 
     /**
-     * lasketaan koskettimien taajuudet
+     * Konstruktori tallentaa käytetyt taajuudet taulukkoon.
      */
     public Keyboard() {
         codeToIndex = new KeyCodeToKeyboardIndex();
@@ -35,7 +34,6 @@ public class Keyboard {
         double previousA = 27.5;
         double previousFreq = 27.5;
 
-        // Lasketaan loppujen äänten taajuudet
         for (int i = 1; i < frequencies.length; i++) {
 
             // Jotta vältytään pyöristysvirheiltä, palataan aina A-sävelellä tarkkaan hertsimäärään
@@ -48,24 +46,22 @@ public class Keyboard {
         }
     }
 
+    /**
+     *
+     * @return Satunnainen taajuus väliltä 40Hz - 840Hz
+     */
     public double randomFrequency() {
-
         return 40+rndm.nextDouble()*800;
     }
 
-    // Metodi etsii painetulle näppäimelle taajuuden
-
     /**
-     *
      * @param keyPressed painetun koskettimen kirjain
-     * @return taajuus, joka vastaa painettua kosketinta, ottaen huomioon käytössä oleva oktaavi
+     * @return taajuus, joka vastaa painettua kosketinta, ottaen huomioon käytössä oleva oktaavi. Jos ei palauteta taajuutta, palautetaan -1.
      */
     public double frequencyOf(int keyPressed) {
         System.out.print(String.format("\033[%dA",5)); // 5 riviä ylös
         System.out.print("\033[2K"); // poistetaan sisältö
 
-
-        // Etsitään indeksi näppäimelle
         int indexOfChar = codeToIndex.getKeyboardIndex(keyPressed);
 
         if (indexOfChar > 17 || indexOfChar < 0) {
@@ -85,7 +81,6 @@ public class Keyboard {
             }
         }
 
-        // Tulostetaan tietoa käyttäjälle painetusta näppäimestä
         System.out.println("\nKoskettimen numero: " + (currentOctave*12+indexOfChar));
         System.out.println("Taajuus: "+ Math.round(frequencies[currentOctave*12 + indexOfChar]) + " Hz  " + "          \n\n");
 
@@ -94,7 +89,7 @@ public class Keyboard {
     }
 
     /**
-     * oktaavi ylös
+     * Oktaavi ylös
      */
     public void octaveUp() {
         if (currentOctave < 5) {
@@ -105,7 +100,7 @@ public class Keyboard {
     }
 
     /**
-     * oktaavi alas
+     * Oktaavi alas
      */
     public void octaveDown() {
         if (currentOctave > 0) {
@@ -114,6 +109,10 @@ public class Keyboard {
         System.out.println("\n\n\nOktaavi:" + currentOctave + "\n");
     }
 
+    /**
+     *
+     * @return Tällä hetkellä käytössä oleva oktaavi
+     */
     public int getCurrentOctave() {
         return currentOctave;
     }

@@ -20,27 +20,32 @@ public class Frame {
     private Keyboard keyboard;
     private OscillatorPanel[] oscillatorPanels;
     private int lastPressed;
-
-    // Luodaan audiothread.AudioThread olio, joka ottaa argumenttina Supplier<short[]> olion
     private AudioThread audioThread;
 
-    // keyAdapter määrittää mitä toimintoja näppäimillä on
+    /**
+     * keyAdapter kuuntelee näppäimistöä ja vastaa tapahtumien välittämisestä muille luokille.
+     */
     private KeyAdapter keyAdapter = new KeyAdapter() {
 
+        /**
+         * Hakee keyboardilta näppäintä vastaavan taajuuden ja asettaa sen oskillaatorien taajuudeksi, jos eri näppäintä
+         * on painettu tai audiothread ei ole käynnissä. Muuten ei tehdä mitään.
+         *
+         * @param e Painetun näppäimen tapahtuma
+         */
         @Override
         public void keyPressed(KeyEvent e) {
             int pressedKeyCode = e.getExtendedKeyCode();
 
             // jos viimeksi painettu näppäin on eri kuin nyt painettu, on tulossa uusi taajuus
             boolean newFreqComing = lastPressed != pressedKeyCode;
+
             // näppäimellä 0 tulee satunnainen taajuus, joka on myös uusi
             if (e.getKeyChar() == '0') {
                 newFreqComing = true;
             }
 
             if (!audioThread.isRunning() || newFreqComing) {
-                // jos säie ei ole käynnissä, ei sitä pitäisi sammuttaa
-                // jos taas säie on käynnissä ja on tulossa uusi taajuus, pitäisi säie resetoida
                 if (!audioThread.isRunning()) {
                     synth.setShouldStopGenerating(false);
                 }   else {
@@ -59,13 +64,22 @@ public class Frame {
             lastPressed = pressedKeyCode;
         }
 
-        // Kun päästetään näppäimistä irti, lopetetaan äänen toistaminen.
+        /**
+         * Kertoo adsr että näppäimestä on päästetty irti
+         *
+         * @param e Päästetyn näppäimen tapahtuma
+         */
         @Override
         public void keyReleased(KeyEvent e) {
             adsr.keyLifted();
         }
     };
 
+    /**
+     * Luodaan GUI, asetellaan oskillaattorit, liu'ut, labelit paikoilleen ja määritellään niiden toiminnot.
+     *
+     * @param howManyOscillators Haluttu oskillaattorien määrä
+     */
     public Frame(int howManyOscillators) {
         frame = new JFrame ("Synth");
 
@@ -97,14 +111,13 @@ public class Frame {
         synth = new Synth(adsr, oscillators);
         audioThread = new AudioThread(synth);
 
-        // Attackille slideri
         JSlider attackSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
         attackSlider.setMajorTickSpacing(20);
         attackSlider.addChangeListener(e -> {
             adsr.setAttack(attackSlider.getValue());
             frame.requestFocus();
         });
-        // Decaylle slider
+
         JSlider decaySlider = new JSlider(JSlider.VERTICAL, 0, 200, 100);
         decaySlider.setMajorTickSpacing(40);
         decaySlider.addChangeListener(e -> {
@@ -113,7 +126,6 @@ public class Frame {
         });
         adsr.setDecay(100);
 
-        // Sustainille slider
         JSlider sustainSlider = new JSlider(JSlider.VERTICAL, 0, 100, 100);
         sustainSlider.setMajorTickSpacing(20);
         sustainSlider.addChangeListener(e -> {
@@ -121,7 +133,6 @@ public class Frame {
             frame.requestFocus();
         });
 
-        // Releaselle slideri
         JSlider releaseSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
         releaseSlider.setMajorTickSpacing(20);
         releaseSlider.addChangeListener(e -> {
@@ -155,21 +166,11 @@ public class Frame {
                 audioThread.close();
             }
         });
-
-        // Ikkunan sulkeminen hävittää sen
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
-        // Ikkunan koko
         frame.setSize(1250,250);
-
-        // Ikkunaa ei voida muuttaa eri kokoiseksi
         frame.setResizable(false);
-
-        // Ei määritellä (ainakaan vielä) layoutia, eikä sijainnin suhdetta mihinkään.
         frame.setLayout(null);
         frame.setLocationRelativeTo(null);
-
-        // Asetetaan näkyväksi.
         frame.setVisible(true);
 
     }
