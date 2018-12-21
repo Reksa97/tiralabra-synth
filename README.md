@@ -14,12 +14,9 @@
 
 [Testausdokumentti](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/testing.md)
 
-### Käyttöönotto
+[Käyttöohje](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/manual.md)
 
-Ladattuasi projektin, suorita `synth` kansiossa komennot `./gradlew build` ja                                  
-`java -jar build/libs/synth-1.0-all.jar` tai vaihtoehtoisesti `./gradlew run`.
-
-Ohjelma kysyy aluksi komentoriviltä kuinka monta oskillaattoria halutaan käyttää. Kun luku on syötetty, käynnistyy itse syntetisaattori. Ohjelmaa käytetään näppäimistöllä ja [määrittelydokumentista](https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/specifications.md) voi katsoa käytössä olevat näppäimet. Ikkunan pitää olla fokuksessa jotta sovellus toimii.
+[JavaDoc](https://htmlpreview.github.io/?https://github.com/Reksa97/tiralabra-synth/blob/master/documentation/javadoc/index.html)
 
 ### Viikkoraportit
 
