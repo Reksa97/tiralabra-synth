@@ -10,6 +10,12 @@ jar {
         )
     }
 }
+apply plugin: 'java'
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+    exclude '*lwjgl*'
+}
 
 group 'org.reko.tiralabra.synth'
 version '1.0'

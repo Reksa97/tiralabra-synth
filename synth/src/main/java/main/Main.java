@@ -27,7 +27,7 @@ public class Main {
         }
         new Frame(oscillators);
 
-        System.out.println("Pianon koskettimia vastaa näppäimistön ylin ja toisiksi ylin kirjainrivi.");
+        System.out.println("Pianon koskettimia vastaa näppäimistön ylin (Q - Å) ja toisiksi ylin (A - Ä) kirjainrivi.");
         System.out.println("Oktaavin saa vaihdettua ylös merkillä 'm' ja alas merkillä 'n'.");
         System.out.println("\n \n \n \n");
     }

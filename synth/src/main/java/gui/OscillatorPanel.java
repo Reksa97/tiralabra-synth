@@ -18,7 +18,7 @@ public class OscillatorPanel extends JPanel implements ActionListener {
     /**
      *
      * @param frame tarvitaan JFrame-olio, jotta fokus voidaan pitää framessa, eikä oskillaattorissa.
-     * @param oscillator Paneelia vastaava oskillaattori
+     * @param oscillator paneelia vastaava oskillaattori
      */
     public OscillatorPanel(JFrame frame, Oscillator oscillator) {
         this.frame = frame;
@@ -45,7 +45,7 @@ public class OscillatorPanel extends JPanel implements ActionListener {
 
     /**
      *
-     * @param e valintaboksin valinnan vaihto rekisteröidään
+     * @param e valintaboksin valinnan vaihto, joka rekisteröidään
      */
     public void actionPerformed(ActionEvent e) {
         JComboBox cb = (JComboBox) e.getSource();

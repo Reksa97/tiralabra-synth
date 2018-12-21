@@ -23,7 +23,6 @@ public class ADSR {
     private int attackAmount;
     private int decayAmount;
     private int sustainAmount;
-
     private int releaseAmount;
 
     private int sampleRate;
